@@ -1,6 +1,6 @@
 import { p } from './sketch/sketch.js'
 
-export class Test {
+export default class Example {
     position: p5.Vector
     velocity: p5.Vector
     color: { r: number; g: number; b: number }
