@@ -20,7 +20,11 @@ export default class Example {
         if (this.position.y < 0 || this.position.y > p.height)
             this.position.y = (this.position.y + p.height) % p.height
         this.velocity.add(p5.Vector.random2D().setMag(10))
-        this.position.add(p5.Vector.mult(this.velocity, p.deltaTime / 1000))
+                
+        const scaledVelocity: p5.Vector = new p5.Vector()
+        p5.Vector.mult(this.velocity, p.deltaTime / 1000, scaledVelocity)
+        
+        this.position.add(scaledVelocity)
         p.push()
         p.noStroke()
         p.fill(this.color.r, this.color.g, this.color.b)
