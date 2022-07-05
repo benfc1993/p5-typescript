@@ -6,4 +6,14 @@ Allows use of Js modules
 
 tsc to compile and browserify to host and provide hot reload
 
-to run: yarn start
+## run
+
+### npm
+```npm i```
+
+```npm start```
+
+### yarn
+```yarn```
+
+```yarn start```
