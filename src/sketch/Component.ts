@@ -1,4 +1,4 @@
-import { Setup, Update } from './Sketch.js'
+import { Setup, Update } from './Sketch'
 
 export interface ComponentClass {
     setup: (p: p5) => void

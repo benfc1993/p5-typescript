@@ -1,15 +1,14 @@
 {
     "compilerOptions": {
-        "module": "es6",
-        "noImplicitAny": true,
-        "outDir": "build",
-        "preserveConstEnums": true,
-        "removeComments": true,
-        "rootDir": "./src/",
+        "outDir": "./dist/",
         "sourceMap": true,
-        "target": "es6",
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "module": "es6",
         "moduleResolution": "node",
-        "lib": ["es2020", "DOM"]
+        "target": "es5",
+        "allowJs": true
     },
-    "include": ["src/**/*", "*"]
+    "include": ["./src/**/*"]
 }

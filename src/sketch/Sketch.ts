@@ -1,4 +1,4 @@
-import { useEvent } from './Events.js'
+import { useEvent } from './Events'
 
 interface SketchArgs {
     preload?: (p: p5) => void
@@ -21,7 +21,7 @@ export const Setup = useEvent<p5>()
 export const Update = useEvent<p5>()
 
 export class Sketch implements SketchClass {
-    sketch: p5
+    sketch!: p5
     options: SketchOptions
     preload = (p: p5) => {}
     setup = (p: p5) => {}

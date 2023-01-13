@@ -1,5 +1,5 @@
-import { Example } from './Example.js'
-import { Sketch } from './sketch/Sketch.js'
+import { Example } from './Example'
+import { Sketch } from './sketch'
 
 const particles = []
 

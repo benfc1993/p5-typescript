@@ -1,11 +1,11 @@
-import { Component } from './sketch/Component.js'
+import { Component } from './sketch'
 
 export class Example extends Component {
-    position: p5.Vector
-    dragOffset: p5.Vector
-    velocity: p5.Vector
-    color: { r: number; g: number; b: number }
-    dragging: boolean
+    position!: p5.Vector
+    dragOffset!: p5.Vector
+    velocity!: p5.Vector
+    color!: { r: number; g: number; b: number }
+    dragging!: boolean
 
     constructor() {
         super()
