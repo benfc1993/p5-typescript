@@ -1,4 +1,5 @@
 import { useEvent } from './Events'
+import p5 from 'p5'
 
 interface SketchArgs {
     preload?: (p: p5) => void
