@@ -5,7 +5,7 @@ const particles = []
 
 const setup = (p: p5) => {
     p.background(47)
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
         particles.push(new Example())
     }
 }

@@ -19,6 +19,7 @@ interface SketchClass extends SketchArgs {
 export const Load = useEvent<p5>()
 export const Setup = useEvent<p5>()
 export const Update = useEvent<p5>()
+export const Input = useEvent<[p5, string]>()
 
 export class Sketch implements SketchClass {
     sketch!: p5
@@ -45,12 +46,14 @@ export class Sketch implements SketchClass {
             }
             p.setup = function () {
                 if (ctx.options.fullscreen)
-                    p.createCanvas(p.windowWidth, p.windowHeight)
+                    p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
 
                 ctx?.setup(p)
                 Setup.raise(p)
             }
 
+            p.mousePressed = () => Input.raise([p, 'mouse-down'])
+            p.mouseReleased = () => Input.raise([p, 'mouse-up'])
             p.draw = () => {
                 ctx?.draw(p)
                 Update.raise(p)
