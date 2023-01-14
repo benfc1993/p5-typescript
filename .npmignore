@@ -1,2 +1,5 @@
 node_modules/
 src/
+*.tsconfig.json
+.prettierrc
+snowpack.config.js
