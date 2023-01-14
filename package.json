@@ -16,9 +16,9 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/benfc1993/p5-ts.git"
+        "url": "git+https://github.com/benfc1993/p5-typescript.git"
     },
-    "homepage": "https://github.com/benfc1993/p5-ts#readme",
+    "homepage": "https://github.com/benfc1993/p5-typescript#readme",
     "author": "Ben Feldberg Collins",
     "license": "MIT",
     "devDependencies": {
