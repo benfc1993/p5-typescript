@@ -5,7 +5,6 @@ module.exports = {
         manifest: true,
         minify: true,
         sourceMap: true,
-        // bundle: true,
         splitting: true,
         treeshake: true,
     },
