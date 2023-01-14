@@ -1,13 +1,23 @@
-export * from './sketch'
-import p5 from 'p5'
-export { p5 }
+import { Example } from './Example'
+import { Component, Sketch } from './sketch'
 
-import * as p5Global from 'p5/global'
+const particles: Component[] = []
 
-declare global {
-    interface p5 {}
-    interface Window {
-        setup: any
-        draw: any
+new Sketch(
+    {
+        fullscreen: true,
+    },
+    (p: p5) => {
+        p.preload = () => {}
+        p.setup = () => {
+            p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
+            p.background(120, 200, 187)
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Example(p))
+            }
+        }
+        p.draw = () => {
+            p.background(47)
+        }
     }
-}
+)
