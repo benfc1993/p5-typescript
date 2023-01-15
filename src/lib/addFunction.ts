@@ -35,11 +35,11 @@ export function addFunction<
     T extends (...args: any) => void,
     K extends (...args: [...Parameters<T>, ...any]) => void
 >(
-    this: T,
+    primary: T,
     secondary: K,
     ...optionalArgs: TupleDifference<Parameters<T>, Parameters<K>>
 ): (...args: Parameters<T>) => void {
-    const cached = this
+    const cached = primary
 
     return (...args: Parameters<T>) => {
         if (cached != undefined) cached(...args)

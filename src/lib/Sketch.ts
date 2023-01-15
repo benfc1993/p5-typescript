@@ -2,18 +2,18 @@ import './addFunction'
 
 import { useEvent } from './Events'
 import p5 from 'p5'
-
-interface SketchArgs {
-    preload?: (p: p5) => void
-    setup?: (p: p5) => void
-    draw?: (p: p5) => void
-}
+import { addFunction } from './addFunction'
+import { Component } from './Component'
 
 interface SketchOptions {
     fullscreen: boolean
 }
 
 interface SketchClass extends Partial<p5> {
+    preload?: () => void
+    setup?: () => void
+    draw?: () => void
+    addComponent: (component: Component) => Component
     sketch: p5
     options: SketchOptions
 }
@@ -31,20 +31,28 @@ export class Sketch implements SketchClass {
     preload = () => {}
     setup = () => {}
     draw = () => {}
-
+    
     constructor(options: Partial<SketchOptions>, sketch: (p: p5) => void) {
         this.options = { ...this.options, ...options }
-        const p = new p5(sketch)
-        p.preload = p.preload.addFunction(Load?.raise)
-        p.setup = p.setup.addFunction(Setup?.raise)
-        p.draw = p.draw.addFunction(Update?.raise)
+        
+        this.sketch = new p5(sketch)
 
-        p.windowResized = p.windowResized.addFunction(
+        this.sketch.preload = this.sketch.preload.addFunction(Load?.raise)
+        this.sketch.setup = this.sketch.setup.addFunction(Setup?.raise)
+        this.sketch.draw = this.sketch.draw.addFunction(Update?.raise)
+
+        this.sketch.windowResized = addFunction(
+            this.sketch.windowResized,
             onWindowResize,
-            p,
+            this.sketch,
             this.options.fullscreen
         )
     }
+    addComponent = (component: Component) => {
+        component.load(this.sketch)
+        return component
+    }
+
 }
 
 const onWindowResize = (

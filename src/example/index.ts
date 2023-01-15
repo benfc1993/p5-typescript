@@ -1,9 +1,9 @@
-import { Example } from './Example'
-import { Component, Sketch } from './sketch'
+import { Circle,  Rect } from './components'
+import { Component, Sketch } from '../lib'
 
 const particles: Component[] = []
 
-new Sketch(
+const sketch = new Sketch(
     {
         fullscreen: true,
     },
@@ -13,7 +13,7 @@ new Sketch(
             p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
             p.background(120, 200, 187)
             for (let i = 0; i < 100; i++) {
-                particles.push(new Example(p))
+                particles.push(new Rect(p))
             }
         }
         p.draw = () => {
@@ -21,3 +21,6 @@ new Sketch(
         }
     }
 )
+for (let i = 0; i < 1000; i++) {
+    sketch.addComponent(new Circle())
+}

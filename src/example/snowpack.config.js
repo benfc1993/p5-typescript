@@ -1,7 +1,6 @@
 module.exports = {
     plugins: [['@snowpack/plugin-typescript']],
     root: 'src/example',
-    exclude: ['src/example'],
     optimize: {
         manifest: true,
         minify: true,
