@@ -27,19 +27,19 @@ export class Example extends Component {
             b: Math.random() * 255,
         }
         this.dragging = false
-        this.sketch.mousePressed = addFunction(
-            this.sketch.mousePressed,
-            this.mousePressed.bind(this)
+        this.sketch.mousePressed = this.sketch.mousePressed.addFunction(
+            this.mousePressed.bind(this),
+            [['1']]
         )
 
-        this.sketch.mouseReleased = addFunction(
-            this.sketch.mouseReleased,
-            () => {
+        this.sketch.mouseReleased = this.sketch.mouseReleased.addFunction(
+            (event: object | undefined, t: number) => {
                 this.dragging = false
-            }
+            },
+            [1]
         )
     }
-    mousePressed(event?: object) {
+    mousePressed(first: object | undefined, second: string[]) {
         if (
             !this.dragging &&
             this.sketch.winMouseX > this.position.x &&
