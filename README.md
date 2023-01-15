@@ -1,21 +1,47 @@
 # p5-ts
 
-P5 ts typescript skeleton project
+p5 typescript package to allow for ease of use. This is an OOP approach which allows for the features below.
 
-Allows use of Js modules
+## Sketch
 
-tsc to compile and browserify to host and provide hot reload
+The sketch component takes in a p5 sketch function, you may also pass options e.g.
 
-please note all import file paths need to include ```.js``` file extension as imports are working from build directory 
+```typescript
+new Sketch(
+    (p: p5) => {
+        p.preload = () => {}
+        p.setup = () => {
+            p.createCanvas(p.windowWidth, p.windowHeight)
+            p.background(47)
+        }
+        p.draw = () => {
+            p.background(47)
+        }
+    },
+    {
+        fullscreen: true,
+    }
+)
+```
+
+### Options
+
+| Option       | value     | default | details   |
+| ------------ | --------- | ------- | --------- |
+| `fullscreen` | `boolean` | false   | This will |
+| `canvasColor`       | ``    |         |           |
+|              |           |         |           |
 
 ## run
 
 ### npm
-```npm i```
 
-```npm start```
+`npm i`
+
+`npm start`
 
 ### yarn
-```yarn```
 
-```yarn start```
+`yarn`
+
+`yarn start`

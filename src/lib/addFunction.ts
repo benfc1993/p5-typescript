@@ -1,9 +1,7 @@
-// 'sloppy mode'
-
 import { TupleDifference } from './types/tupleDifference'
 
 declare global {
-    interface Function {
+    export interface Function {
         addFunction<
             T extends (...args: any) => void,
             K extends (...args: [...Parameters<T>, ...any]) => void

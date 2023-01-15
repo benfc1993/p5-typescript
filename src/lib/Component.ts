@@ -1,4 +1,4 @@
-import { Load, Setup, Update } from './Sketch'
+import { Setup, Update } from './Sketch'
 
 export interface ComponentClass {
     sketch: p5

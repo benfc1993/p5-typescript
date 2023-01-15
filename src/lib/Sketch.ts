@@ -1,5 +1,3 @@
-import './addFunction'
-
 import { useEvent } from './Events'
 import p5 from 'p5'
 import { addFunction } from './addFunction'
@@ -7,6 +5,12 @@ import { Component } from './Component'
 
 interface SketchOptions {
     fullscreen: boolean
+    canvasColor: {
+        r: number
+        g: number
+        b: number
+        a?: number
+    } | null
 }
 
 interface SketchClass extends Partial<p5> {
@@ -26,20 +30,24 @@ export const Input = useEvent<[p5, string]>()
 export class Sketch implements SketchClass {
     sketch!: p5
     options: SketchOptions = {
-        fullscreen: true,
+        fullscreen: false,
+        canvasColor: null
     }
     preload = () => {}
     setup = () => {}
     draw = () => {}
     
-    constructor(options: Partial<SketchOptions>, sketch: (p: p5) => void) {
+    constructor(sketch: (p: p5) => void, options?: Partial<SketchOptions>) {
         this.options = { ...this.options, ...options }
         
         this.sketch = new p5(sketch)
 
         this.sketch.preload = this.sketch.preload.addFunction(Load?.raise)
         this.sketch.setup = this.sketch.setup.addFunction(Setup?.raise)
-        this.sketch.draw = this.sketch.draw.addFunction(Update?.raise)
+        this.sketch.draw = this.sketch.draw.addFunction(() => {
+            if(this.options.canvasColor) this.sketch.background(this.options.canvasColor.r,this.options.canvasColor.g, this.options.canvasColor.b, this.options.canvasColor.a || 255)
+            Update?.raise()
+        })
 
         this.sketch.windowResized = addFunction(
             this.sketch.windowResized,

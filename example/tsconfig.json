@@ -11,5 +11,5 @@
         "target": "es5",
         "allowJs": true,
     },
-    "include": ["./src/**/*", "snowpack.config.prod.js"],
+    "include": ["."],
 }

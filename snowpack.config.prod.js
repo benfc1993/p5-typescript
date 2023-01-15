@@ -1,7 +1,6 @@
 module.exports = {
     plugins: [['@snowpack/plugin-typescript']],
-    root: 'src/example',
-    exclude: ['src/example'],
+    root: 'src',
     optimize: {
         manifest: true,
         minify: true,
@@ -15,5 +14,5 @@ module.exports = {
     mount: {
         dist: '/',
         src: '/',
-    },
+    }
 }

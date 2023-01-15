@@ -1,8 +1,6 @@
-import '../lib/addFunction'
-
-import { Component } from '../lib'
 import p5 from 'p5'
-import { addFunction } from '../lib/addFunction'
+import { addFunction, Component } from '../src/lib'
+
 
 export class Rect extends Component {
     position!: p5.Vector
