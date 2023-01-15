@@ -9,7 +9,7 @@
         "module": "es6",
         "moduleResolution": "node",
         "target": "es5",
-        "allowJs": true,
+        "allowJs": true
     },
-    "include": ["./src/**/*", "snowpack.config.prod.js"],
+    "include": ["./src/**/*"]
 }

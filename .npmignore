@@ -3,5 +3,5 @@ src/
 *.tsconfig.json
 tsconfig.json
 .prettierrc
-snowpack.config.js
-dist/example/
+*.snowpack.config.js
+example/

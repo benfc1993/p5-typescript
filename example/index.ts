@@ -1,4 +1,5 @@
-import { Circle,  Rect } from './components'
+import { Circle } from './Circle'
+import { Rect } from './Rect'
 import { Component, Sketch } from '../src/lib'
 import p5 from 'p5'
 
@@ -9,18 +10,15 @@ const sketch = new Sketch(
         p.preload = () => {}
         p.setup = () => {
             p.createCanvas(p.windowWidth, p.windowHeight)
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Rect(p))
+            for (let i = 0; i < 1000; i++) {
+                sketch.addComponent(new Circle())
+                sketch.addComponent(new Rect())
             }
         }
-        p.draw = () => {
-        }
+        p.draw = () => {}
     },
     {
         fullscreen: true,
-        canvasColor: {r: 120, g: 208, b: 172}
+        canvasColor: { r: 120, g: 208, b: 172 },
     }
 )
-for (let i = 0; i < 1000; i++) {
-    sketch.addComponent(new Circle())
-}
