@@ -11,8 +11,9 @@ type CanvasColor = {
 }
 
 interface SketchOptions {
-    fullscreen: boolean
-    canvasColor: CanvasColor | null
+    divId?: string
+    fullscreen?: boolean
+    canvasColor?: CanvasColor | null
 }
 
 interface SketchClass extends Partial<p5> {
@@ -35,7 +36,16 @@ export class Sketch implements SketchClass {
     constructor(sketch: (p: p5) => void, options?: Partial<SketchOptions>) {
         this.options = { ...this.options, ...options }
 
-        this.sketch = new p5(sketch)
+        if (this.options.divId) {
+            const div = document.getElementById(this.options.divId)
+            if (!div)
+                throw new Error(
+                    `No div with id: "${this.options.divId}". \n This is the value of the divId option.`
+                )
+            this.sketch = new p5(sketch, div)
+        } else {
+            this.sketch = new p5(sketch)
+        }
 
         this.initialiseFunctions()
     }
@@ -46,7 +56,15 @@ export class Sketch implements SketchClass {
     }
 
     private initialiseFunctions() {
-        this.sketch.setup = this.sketch.setup.addFunction(Setup?.raise)
+        this.sketch.setup = this.sketch.setup.addFunction(() => {
+            if (this.options.fullscreen) {
+                this.sketch.createCanvas(
+                    this.sketch.windowWidth,
+                    this.sketch.windowHeight
+                )
+            }
+            Setup?.raise()
+        })
         this.sketch.draw = this.sketch.draw.addFunction(() => {
             if (this.options.canvasColor) this.setCanvasColor()
             Draw?.raise()
