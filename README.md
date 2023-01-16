@@ -13,6 +13,25 @@ An OOP framework to make using p5 with typescript that much smoother.
 import p5 from 'p5'
 ```
 
+You will also need to add a `*.d.ts` file with the following content to your root directory:
+
+```typescript
+import * as p5Global from 'p5/global'
+import module = require('p5')
+export = module
+export as namespace p5
+
+declare global {
+    interface p5 {}
+    interface Window {
+        setup: any
+        draw: any
+    }
+}
+```
+
+This will setup the p5 types
+
 ## Sketch
 
 The sketch component takes in a p5 sketch function. Any p5 sketch functions can be added. This will be used to initialize the p5 sketch instance on load.
