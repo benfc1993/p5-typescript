@@ -1,11 +1,11 @@
 # p5-typescript
 
+A OOP framework to make using p5 with typescript that much smoother.
+
 <p style="text-align: center; display: flex; justify-content: center; gap: 20px;align-items: center;">
 <img alt="npm" src="https://img.shields.io/npm/v/p5-typescript">
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/benfc1993/p5-typescript">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/benfc1993/p5-typescript"><img alt="npm" src="https://img.shields.io/npm/dw/p5-typescript">
 </P>
-
-An OOP framework to make using p5 with typescript that much smoother.
 
 **Please note any component or file which wants to use anything from the p5 library p5 will need to be imported into the file**
 
@@ -58,11 +58,31 @@ export const sketch = new Sketch(
 
 ### Options
 
-| Option        | value                                           | default     | details                                                                                                                                                                  |
-| ------------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `fullscreen`  | `boolean`                                       | false       | This will set the canvas size to the window size and amend when the screen is resized. This will create a canvas of the correct size so one does not need to be created. |
-| `canvasColor` | `{r: number, g: number, b: number, a?: number}` | null        | If provided this will set the background color at the start of the draw function.                                                                                        |
-| `divId`       | `string`                                        | `undefined` | if provided this will bind the sketch to an HTML element with an id of the passed string. The canvas is created within the element even in fullscreen mode.              |
+| Option        | value                                           | default     | details                                                                                           |
+| ------------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
+| `fullscreen`  | `boolean`                                       | false       | This will create a canvas and set the size to the window size. This is updated on windiw resize . |
+| `canvasColor` | `{r: number, g: number, b: number, a?: number}` | null        | If provided this will set the background color at the start of the draw function.                 |
+| `divId`       | `string`                                        | `undefined` | This will cause the canvas to be rendered in the HTML element with the provided id.               |
+
+## Adding Items to the sketch
+
+### addComponent
+
+The provided `Component` class is designed to make it as easy as possible to add items to your sketch. Any class inheriting the `Component` class will be automatically added to the sketch lifecycle and updated on the draw call. These classes can also easily be added to the sketch:
+
+```typescript
+const sketch = new Sketch(
+    ...
+    p.setup = () => {
+        sketch.addComponent(new Component())
+    }
+    ...
+)
+```
+
+The `addComponent` function can be called anywhere in the application as long as you have access to the sketch instance.
+
+You can also add / update items within the sketch by adding the logic to the initial function.
 
 ---
 
@@ -71,7 +91,7 @@ export const sketch = new Sketch(
 This is a useful way to create objects which live within the sketch lifecycle. any class which implements the Component class will have the draw function called after the sketch draw function. A component can be created as below:
 
 ```typescript
-export class Circle extends Component {
+class Circle extends Component {
     position!: p5.Vector
     radius!: number
 
@@ -175,7 +195,7 @@ const myAdditionalFunction = (arg0: number, arg1: string) => {
 
 myFunction = myFunction.addFunction(myAdditionalFunction, 'Message')
 
-myFunction(2) //output: "2" "Message"
+myFunction(2) //output: "4" "Message"
 ```
 
 ## Events
@@ -187,6 +207,19 @@ Events can pass data to subscribers via the data argument which is a generic typ
 The `subscribe` method will return the `unsubscribe` method. Be aware you may need to bind this when subscribing a class method.
 
 To trigger the event call the Events `raise` method.
+
+### Lifecyle Events
+
+There are 3 lifecycle events available. These are exposed and you can add any subscribers you like to them.
+
+**Load**
+This is called in the p5 `preload` function.
+
+**Setup**
+This is called in the p5 `setup` function.
+
+**Draw**
+This is called in the p5 `draw` function.
 
 ```typescript
 const myEvent = useEvent<string>()
