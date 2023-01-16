@@ -7,7 +7,11 @@ const sketch = new Sketch(
     (p: p5) => {
         p.preload = () => {}
         p.setup = () => {
-            p.createCanvas(p.windowWidth, p.windowHeight)
+            const div = document.getElementById('sketch-1')
+            if (div) {
+                const { width, height } = div.getBoundingClientRect()
+                p.createCanvas(width, height)
+            }
             for (let i = 0; i < 1000; i++) {
                 sketch.addComponent(new Circle())
                 sketch.addComponent(new Rect())
@@ -16,7 +20,7 @@ const sketch = new Sketch(
         p.draw = () => {}
     },
     {
-        fullscreen: true,
+        divId: 'sketch-1',
         canvasColor: { r: 120, g: 208, b: 172 },
     }
 )
