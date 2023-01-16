@@ -1,9 +1,7 @@
 import { Circle } from './Circle'
 import { Rect } from './Rect'
-import { Component, Sketch } from '../src/lib'
+import { Sketch } from '../src/lib'
 import p5 from 'p5'
-
-const particles: Component[] = []
 
 const sketch = new Sketch(
     (p: p5) => {

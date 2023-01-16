@@ -13,8 +13,7 @@ export class Rect extends Component {
         super()
     }
     setup(): void {
-        console.log('rect setup')
-        this.position = this.sketch.createVector(
+        this.position = new p5.Vector(
             this.sketch.width / 2,
             this.sketch.height / 2,
             10
