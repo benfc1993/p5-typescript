@@ -61,7 +61,7 @@ export const sketch = new Sketch(
 | Option        | value                                           | default     | details                                                                                                                                                                  |
 | ------------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `fullscreen`  | `boolean`                                       | false       | This will set the canvas size to the window size and amend when the screen is resized. This will create a canvas of the correct size so one does not need to be created. |
-| `canvasColor` | `{r: number, g: number, b: number, a?: number}` | null        | If provided this will set the background color at the start of the draw function                                                                                         |
+| `canvasColor` | `{r: number, g: number, b: number, a?: number}` | null        | If provided this will set the background color at the start of the draw function.                                                                                        |
 | `divId`       | `string`                                        | `undefined` | if provided this will bind the sketch to an HTML element with an id of the passed string. The canvas is created within the element even in fullscreen mode.              |
 
 ---
