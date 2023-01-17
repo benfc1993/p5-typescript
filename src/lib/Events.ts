@@ -12,10 +12,7 @@ export const useEvent = <T = never>(): IEvent<T> => {
     }
 
     const raise = (data?: T) => {
-        const subArray = Array.from(subscribers)
-        for (let i = subArray.length - 1; i >= 0; i--) {
-            subArray[i].call(data)
-        }
+        subscribers.forEach((subscriber) => subscriber(data))
     }
 
     return {
