@@ -19,7 +19,8 @@ export abstract class Component implements ComponentClass {
     }
     sketch!: p5
 
-    constructor() {
+    constructor(p?: p5) {
+        if (p) this.sketch = p
         this.eventUnsubscriptions.setup = Setup.subscribe(this.setup.bind(this))
         this.eventUnsubscriptions.draw = Draw.subscribe(this.draw.bind(this))
     }
