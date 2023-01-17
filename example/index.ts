@@ -13,7 +13,6 @@ const sketch = new Sketch(
                 p.createCanvas(width, height)
             }
             for (let i = 0; i < 1000; i++) {
-                sketch.addComponent(new Circle())
                 sketch.addComponent(new Rect())
             }
         }
@@ -24,3 +23,7 @@ const sketch = new Sketch(
         canvasColor: { r: 120, g: 208, b: 172 },
     }
 )
+
+for (let i = 0; i < 1000; i++) {
+    new Circle(sketch.sketch)
+}

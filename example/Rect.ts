@@ -9,8 +9,8 @@ export class Rect extends Component {
     dragging!: boolean
     width!: number
 
-    constructor() {
-        super()
+    constructor(p?: p5) {
+        super(p)
     }
     setup(): void {
         this.position = new p5.Vector(

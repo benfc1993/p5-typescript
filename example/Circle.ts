@@ -9,8 +9,8 @@ export class Circle extends Component {
     dragging!: boolean
     radius!: number
 
-    constructor() {
-        super()
+    constructor(p: p5) {
+        super(p)
     }
     setup(): void {
         this.position = new p5.Vector(
