@@ -17,7 +17,7 @@ interface SketchOptions {
 }
 
 interface SketchClass extends Partial<p5> {
-    addComponent: (component: Component) => Component
+    addComponent: <T extends Component>(component: T) => T
     sketch: p5
     options: SketchOptions
 }
@@ -50,7 +50,7 @@ export class Sketch implements SketchClass {
         this.initialiseFunctions()
     }
 
-    addComponent = (component: Component) => {
+    addComponent = <T extends Component>(component: T) => {
         component.load(this.sketch)
         return component
     }
