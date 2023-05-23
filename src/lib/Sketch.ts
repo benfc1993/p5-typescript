@@ -2,6 +2,7 @@ import { useEvent } from './Events'
 import p5 from 'p5'
 import { addFunction } from './addFunction'
 import { Component } from './Component'
+import { PercentageToPixel } from './percentageToPixel'
 
 type CanvasColor = {
     r: number
@@ -14,6 +15,7 @@ interface SketchOptions {
     divId?: string
     fullscreen?: boolean
     canvasColor?: CanvasColor | null
+    size: { w: number | string; h: number | string }
 }
 
 interface SketchClass extends Partial<p5> {
@@ -31,6 +33,10 @@ export class Sketch implements SketchClass {
     options: SketchOptions = {
         fullscreen: false,
         canvasColor: null,
+        size: {
+            w: 800,
+            h: 400,
+        },
     }
 
     constructor(sketch: (p: p5) => void, options?: Partial<SketchOptions>) {
@@ -62,6 +68,13 @@ export class Sketch implements SketchClass {
                     this.sketch.windowWidth,
                     this.sketch.windowHeight
                 )
+            } else {
+                const { x, y } = PercentageToPixel(
+                    { width: window.innerWidth, height: window.innerHeight },
+                    this.options.size
+                )
+
+                this.sketch.createCanvas(x, y)
             }
             Setup?.raise()
         })
@@ -76,11 +89,19 @@ export class Sketch implements SketchClass {
         )
     }
     private onWindowResize = (event: object | undefined) => {
-        if (this.options.fullscreen)
+        if (this.options.fullscreen) {
             this.sketch.resizeCanvas(
                 this.sketch.windowWidth,
                 this.sketch.windowHeight
             )
+        } else {
+            const { x, y } = PercentageToPixel(
+                { width: window.innerWidth, height: window.innerHeight },
+                this.options.size
+            )
+
+            this.sketch.resizeCanvas(x, y)
+        }
     }
 
     private setCanvasColor = () => {
