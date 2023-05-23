@@ -1,18 +1,24 @@
 export const PercentageToPixel = (
     scalar: { width: number; height: number },
     sizeIn:
-        | { x: number | string; y: number | string }
-        | { w: number | string; h: number | string }
+        | {
+              x: number | string | (() => number)
+              y: number | string | (() => number)
+          }
+        | {
+              w: number | string | (() => number)
+              h: number | string | (() => number)
+          }
 ): { x: number; y: number } => {
-    const size =
+    const size: { x: number | string; y: number | string } =
         'x' in sizeIn
             ? {
-                  x: sizeIn.x,
-                  y: sizeIn.y,
+                  x: sizeIn.x instanceof Function ? sizeIn.x() : sizeIn.x,
+                  y: sizeIn.y instanceof Function ? sizeIn.y() : sizeIn.y,
               }
             : {
-                  x: sizeIn.w,
-                  y: sizeIn.h,
+                  x: sizeIn.w instanceof Function ? sizeIn.w() : sizeIn.w,
+                  y: sizeIn.h instanceof Function ? sizeIn.h() : sizeIn.h,
               }
 
     let x = 0

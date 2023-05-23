@@ -15,7 +15,10 @@ interface SketchOptions {
     divId?: string
     fullscreen?: boolean
     canvasColor?: CanvasColor | null
-    size: { w: number | string; h: number | string }
+    size: {
+        w: number | string | (() => number)
+        h: number | string | (() => number)
+    }
 }
 
 interface SketchClass extends Partial<p5> {
