@@ -21,7 +21,10 @@ const sketch = new Sketch(
     {
         divId: 'sketch-1',
         canvasColor: { r: 120, g: 208, b: 172 },
-        size: { w: '50%', h: '50%' },
+        size: {
+            w: '50%',
+            h: () => window.innerHeight / 2,
+        },
     }
 )
 
