@@ -1,4 +1,2 @@
-export * from './addFunction'
-export * from './Component'
-export * from './Sketch'
-export * from './Events'
+export * from './utils'
+export * from './components'

@@ -1,5 +1,5 @@
 import p5 from 'p5'
-import { addFunction, Component } from '../src/lib'
+import { addFunction, Component, Sketch } from '../src/lib'
 
 export class Circle extends Component {
     position!: p5.Vector
@@ -9,8 +9,8 @@ export class Circle extends Component {
     dragging!: boolean
     radius!: number
 
-    constructor(p: p5) {
-        super(p)
+    constructor(sketchInstance?: Sketch) {
+        super(sketchInstance)
     }
     setup(): void {
         this.position = new p5.Vector(
@@ -27,19 +27,11 @@ export class Circle extends Component {
             b: Math.random() * 255,
         }
         this.dragging = false
-        this.sketch.mousePressed = addFunction(
-            this.sketch.mousePressed,
-            this.mousePressed.bind(this)
-        )
+        this.input.subscribeToClick(this.mousePressed.bind(this), 1)
 
-        this.sketch.mouseReleased = addFunction(
-            this.sketch.mouseReleased,
-            () => {
-                this.dragging = false
-            }
-        )
+        this.input.subscribeToMouseReleased(this.mouseReleased.bind(this), 1)
     }
-    mousePressed(event?: object) {
+    mousePressed(event?: MouseEvent) {
         const x = this.sketch.winMouseX - this.position.x
         const y = this.sketch.winMouseY - this.position.y
         const isInRadius = x * x + y * y <= this.radius * this.radius
@@ -48,8 +40,16 @@ export class Circle extends Component {
             this.dragOffset.x = this.sketch.winMouseX - this.position.x
             this.dragOffset.y = this.sketch.winMouseY - this.position.y
             this.dragging = true
+            return true
         }
+        return false
     }
+
+    mouseReleased(event: MouseEvent) {
+        this.dragging = false
+        return false
+    }
+
     draw(): void {
         if (this.dragging) {
             this.position.x = this.sketch.winMouseX - this.dragOffset.x

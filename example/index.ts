@@ -12,9 +12,12 @@ const sketch = new Sketch(
                 const { width, height } = div.getBoundingClientRect()
                 p.createCanvas(width, height)
             }
-            for (let i = 0; i < 1000; i++) {
+            for (let i = 0; i < 100; i++) {
                 sketch.addComponent(new Rect())
             }
+            // for (let i = 0; i < 100; i++) {
+            // sketch.addComponent(new Circle())
+            // }
         }
         p.draw = () => {}
     },
@@ -22,12 +25,12 @@ const sketch = new Sketch(
         divId: 'sketch-1',
         canvasColor: { r: 120, g: 208, b: 172 },
         size: {
-            w: '50%',
-            h: () => window.innerHeight / 2,
+            w: '75%',
+            h: () => window.innerHeight * 0.75,
         },
     }
 )
 
-for (let i = 0; i < 1000; i++) {
-    new Circle(sketch.sketch)
+for (let i = 0; i < 100; i++) {
+    new Circle(sketch)
 }
