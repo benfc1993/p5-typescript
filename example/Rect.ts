@@ -1,5 +1,5 @@
 import p5 from 'p5'
-import { Component, addFunction } from '../src/lib'
+import { Component, Sketch, addFunction } from '../src/lib'
 
 export class Rect extends Component {
     position!: p5.Vector
@@ -9,9 +9,6 @@ export class Rect extends Component {
     dragging!: boolean
     width!: number
 
-    constructor(p?: p5) {
-        super(p)
-    }
     setup(): void {
         this.position = new p5.Vector(
             this.sketch.width / 2,
@@ -27,19 +24,11 @@ export class Rect extends Component {
             b: Math.random() * 255,
         }
         this.dragging = false
-        this.sketch.mousePressed = addFunction(
-            this.sketch.mousePressed,
-            this.mousePressed.bind(this)
-        )
+        this.input.subscribeToClick(this.mousePressed.bind(this), 1)
 
-        this.sketch.mouseReleased = addFunction(
-            this.sketch.mouseReleased,
-            () => {
-                this.dragging = false
-            }
-        )
+        this.input.subscribeToMouseReleased(this.mouseReleased.bind(this), 1)
     }
-    mousePressed(event?: object) {
+    mousePressed(event: MouseEvent): boolean {
         if (
             !this.dragging &&
             this.sketch.winMouseX > this.position.x &&
@@ -50,8 +39,17 @@ export class Rect extends Component {
             this.dragOffset.x = this.sketch.winMouseX - this.position.x
             this.dragOffset.y = this.sketch.winMouseY - this.position.y
             this.dragging = true
+            return true
         }
+
+        return false
     }
+
+    mouseReleased(event: MouseEvent) {
+        this.dragging = false
+        return false
+    }
+
     draw(): void {
         if (this.dragging) {
             this.position.x = this.sketch.winMouseX - this.dragOffset.x

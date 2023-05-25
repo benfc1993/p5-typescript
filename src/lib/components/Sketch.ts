@@ -1,8 +1,9 @@
-import { useEvent } from './Events'
 import p5 from 'p5'
-import { addFunction } from './addFunction'
+import { addFunction } from '../utils/addFunction'
 import { Component } from './Component'
-import { PercentageToPixel } from './percentageToPixel'
+import { PercentageToPixel } from '../utils'
+import { InputManager } from './InputManager'
+import { Draw } from './SketchLoopEvents'
 
 type CanvasColor = {
     r: number
@@ -21,15 +22,12 @@ interface SketchOptions {
     }
 }
 
-interface SketchClass extends Partial<p5> {
+interface SketchClass extends Partial<Omit<p5, 'get'>> {
     addComponent: <T extends Component>(component: T) => T
     sketch: p5
     options: SketchOptions
+    inputManager: InputManager
 }
-
-export const Setup = useEvent()
-export const Draw = useEvent()
-export const Input = useEvent<[p5, string]>()
 
 export class Sketch implements SketchClass {
     sketch!: p5
@@ -41,6 +39,8 @@ export class Sketch implements SketchClass {
             h: 400,
         },
     }
+
+    inputManager: InputManager
 
     constructor(sketch: (p: p5) => void, options?: Partial<SketchOptions>) {
         this.options = { ...this.options, ...options }
@@ -55,12 +55,12 @@ export class Sketch implements SketchClass {
         } else {
             this.sketch = new p5(sketch)
         }
-
+        this.inputManager = new InputManager(this.sketch)
         this.initialiseFunctions()
     }
 
     addComponent = <T extends Component>(component: T) => {
-        component.load(this.sketch)
+        component.load(this)
         return component
     }
 
@@ -79,7 +79,7 @@ export class Sketch implements SketchClass {
 
                 this.sketch.createCanvas(x, y)
             }
-            Setup?.raise()
+            this.inputManager.setup()
         })
         this.sketch.draw = this.sketch.draw.addFunction(() => {
             if (this.options.canvasColor) this.setCanvasColor()
