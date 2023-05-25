@@ -15,9 +15,6 @@ const sketch = new Sketch(
             for (let i = 0; i < 100; i++) {
                 sketch.addComponent(Rect)
             }
-            // for (let i = 0; i < 100; i++) {
-            // sketch.addComponent(new Circle())
-            // }
         }
         p.draw = () => {}
     },
@@ -32,5 +29,5 @@ const sketch = new Sketch(
 )
 
 for (let i = 0; i < 100; i++) {
-    new Circle(sketch)
+    sketch.addComponent(Circle)
 }

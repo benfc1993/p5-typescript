@@ -33,6 +33,7 @@ export class Rect extends Component {
 
         this.input.subscribeToMouseReleased(this.mouseReleased.bind(this), 1)
     }
+
     mousePressed(event: MouseEvent): boolean {
         if (
             !this.dragging &&
