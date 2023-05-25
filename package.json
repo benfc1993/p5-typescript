@@ -9,6 +9,9 @@
         "start": "snowpack dev --config dev.snowpack.config.js",
         "build": "snowpack build --config prod.snowpack.config.js && tsc -p declarations.tsconfig.json && cp src/p5.d.ts dist/p5.d.ts"
     },
+    "bin": {
+        "init": "./bin/setup"
+    },
     "keywords": [
         "typescript",
         "p5",
