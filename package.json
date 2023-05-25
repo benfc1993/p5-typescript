@@ -1,13 +1,14 @@
 {
     "name": "p5-typescript",
-    "version": "2.5.1",
+    "version": "3.0.2",
     "description": "A framework to make using p5 with typescript that much smoother.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rm dist/bundle.js",
         "start": "snowpack dev --config dev.snowpack.config.js",
-        "build": "snowpack build --config prod.snowpack.config.js && tsc -p declarations.tsconfig.json && cp src/p5.d.ts dist/p5.d.ts"
+        "build": "snowpack build --config prod.snowpack.config.js && tsc -p declarations.tsconfig.json && cp src/p5.d.ts dist/p5.d.ts",
+        "test": "jest src/lib/__tests__"
     },
     "bin": {
         "init": "./bin/setup"
@@ -26,9 +27,13 @@
     "license": "MIT",
     "devDependencies": {
         "@snowpack/plugin-typescript": "^1.2.1",
+        "@types/jest": "^29.5.1",
         "@types/node": "^16.10.3",
         "browser-sync": "^2.27.5",
+        "jest": "^29.5.0",
+        "jest-environment-jsdom": "^29.5.0",
         "snowpack": "^3.8.8",
+        "ts-jest": "^29.1.0",
         "typescript": "^4.4.3"
     },
     "dependencies": {

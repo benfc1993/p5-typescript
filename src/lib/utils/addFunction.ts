@@ -1,4 +1,4 @@
-import { TupleDifference } from './types/tupleDifference'
+import { TupleDifference } from '../types/tupleDifference'
 
 declare global {
     export interface Function {

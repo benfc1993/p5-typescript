@@ -9,7 +9,9 @@
         "module": "es6",
         "moduleResolution": "node",
         "target": "es5",
-        "allowJs": true
+        "allowJs": true,
+        "skipLibCheck": true
     },
+    "exclude": ["node_modules"],
     "include": ["./src/**/*"]
 }
