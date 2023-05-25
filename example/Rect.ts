@@ -9,6 +9,11 @@ export class Rect extends Component {
     dragging!: boolean
     width!: number
 
+    constructor(sketchInstance: Sketch) {
+        super(sketchInstance)
+        this.setup()
+    }
+
     setup(): void {
         this.position = new p5.Vector(
             this.sketch.width / 2,

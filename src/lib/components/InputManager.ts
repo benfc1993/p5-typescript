@@ -3,47 +3,48 @@ type MouseEventSubscriber = (e: MouseEvent) => boolean
 
 export class InputManager {
     sketch: p5
-    onClickSubscribers: MouseEventSubscriber[] = []
+    onMousePressedSubscribers: MouseEventSubscriber[] = []
     onMouseReleasedSubscribers: MouseEventSubscriber[] = []
     onKeyPressedSubscribers: KeyEventSubscriber[] = []
     onKeyReleasedSubscribers: KeyEventSubscriber[] = []
 
     constructor(p: p5) {
         this.sketch = p
+        this.setup()
     }
 
-    subscribeToClick(sub: MouseEventSubscriber, order: 1 | -1 = -1) {
+    subscribeToMousePressed(sub: MouseEventSubscriber, order: 1 | -1 = -1) {
         order === -1
-            ? this.onClickSubscribers.push(sub)
-            : this.onClickSubscribers.unshift(sub)
-        return () => this.unsubscribeClickEvent.bind(this, sub)
+            ? this.onMousePressedSubscribers.push(sub)
+            : this.onMousePressedSubscribers.unshift(sub)
+        return this.unsubscribeMousePressedEvent.bind(this, sub)
     }
 
     subscribeToMouseReleased(sub: MouseEventSubscriber, order: 1 | -1 = -1) {
         order === -1
             ? this.onMouseReleasedSubscribers.push(sub)
             : this.onMouseReleasedSubscribers.unshift(sub)
-        return () => this.unsubscribeMouseReleasedEvent.bind(this, sub)
+        return this.unsubscribeMouseReleasedEvent.bind(this, sub)
     }
 
     subscribeToKeyPressed(sub: KeyEventSubscriber, order: 1 | -1 = -1) {
         order === -1
             ? this.onKeyPressedSubscribers.push(sub)
             : this.onKeyPressedSubscribers.unshift(sub)
-        return () => this.unsubscribeKeyPressedEvent.bind(this, sub)
+        return this.unsubscribeKeyPressedEvent.bind(this, sub)
     }
 
     subscribeToKeyReleased(sub: KeyEventSubscriber, order: 1 | -1 = -1) {
         order === -1
             ? this.onKeyReleasedSubscribers.push(sub)
             : this.onKeyReleasedSubscribers.unshift(sub)
-        return () => this.unsubscribeKeyReleasedEvent.bind(this, sub)
+        return this.unsubscribeKeyReleasedEvent.bind(this, sub)
     }
 
-    unsubscribeClickEvent(sub: MouseEventSubscriber) {
-        const subs = new Set(this.onClickSubscribers)
+    unsubscribeMousePressedEvent(sub: MouseEventSubscriber) {
+        const subs = new Set(this.onMousePressedSubscribers)
         subs.delete(sub)
-        this.onClickSubscribers = Array.from(subs)
+        this.onMousePressedSubscribers = Array.from(subs)
     }
 
     unsubscribeMouseReleasedEvent(sub: MouseEventSubscriber) {
@@ -59,12 +60,14 @@ export class InputManager {
     }
 
     unsubscribeKeyReleasedEvent(sub: KeyEventSubscriber) {
-        const subs = new Set(this.onKeyPressedSubscribers)
+        const subs = new Set(this.onKeyReleasedSubscribers)
         subs.delete(sub)
-        this.onKeyPressedSubscribers = Array.from(subs)
+        this.onKeyReleasedSubscribers = Array.from(subs)
     }
 
-    onClick(event: MouseEvent) {
+    onMousePressed(event?: MouseEvent) {
+        if (!event) return
+
         if (
             this.sketch.mouseX < 0 ||
             this.sketch.mouseX > this.sketch.width ||
@@ -73,13 +76,15 @@ export class InputManager {
         )
             return
         event.preventDefault()
-        for (const subscriber of this.onClickSubscribers) {
+        for (const subscriber of this.onMousePressedSubscribers) {
             const handled = subscriber(event)
             if (handled) return
         }
     }
 
-    onMouseReleased(event: MouseEvent) {
+    onMouseReleased(event?: MouseEvent) {
+        if (!event) return
+
         if (
             this.sketch.mouseX < 0 ||
             this.sketch.mouseX > this.sketch.width ||
@@ -94,7 +99,7 @@ export class InputManager {
         }
     }
 
-    onKeyPress(event?: KeyboardEvent | undefined) {
+    onKeyPress(event?: KeyboardEvent) {
         if (!event) return
         for (const subscriber of this.onKeyPressedSubscribers) {
             const handled = subscriber(event)
@@ -102,7 +107,7 @@ export class InputManager {
         }
     }
 
-    onKeyRelease(event?: KeyboardEvent | undefined) {
+    onKeyRelease(event?: KeyboardEvent) {
         if (!event) return
         for (const subscriber of this.onKeyReleasedSubscribers) {
             const handled = subscriber(event)
@@ -115,7 +120,7 @@ export class InputManager {
     }
 
     setup(): void {
-        this.sketch.mousePressed = this.onClick.bind(this)
+        this.sketch.mousePressed = this.onMousePressed.bind(this)
         this.sketch.mouseReleased = this.onMouseReleased.bind(this)
         this.sketch.keyPressed = this.onKeyPress.bind(this)
         this.sketch.keyReleased = this.onKeyRelease.bind(this)

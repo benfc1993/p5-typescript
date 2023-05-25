@@ -4,6 +4,7 @@ import { Component } from './Component'
 import { PercentageToPixel } from '../utils'
 import { InputManager } from './InputManager'
 import { Draw } from './SketchLoopEvents'
+import { Class, DropFirst } from '../types'
 
 type CanvasColor = {
     r: number
@@ -23,7 +24,10 @@ interface SketchOptions {
 }
 
 interface SketchClass extends Partial<Omit<p5, 'get'>> {
-    addComponent: <T extends Component>(component: T) => T
+    addComponent: <T extends Class<Component>>(
+        component: T,
+        ...args: DropFirst<ConstructorParameters<T>>
+    ) => InstanceType<T>
     sketch: p5
     options: SketchOptions
     inputManager: InputManager
@@ -59,9 +63,16 @@ export class Sketch implements SketchClass {
         this.initialiseFunctions()
     }
 
-    addComponent = <T extends Component>(component: T) => {
-        component.load(this)
-        return component
+    addComponent<T extends Class<Component>>(
+        component: T,
+        ...args: DropFirst<ConstructorParameters<T>>
+    ) {
+        const componentInstance = new component(
+            this,
+            ...args
+        ) as InstanceType<T>
+        componentInstance.onLoad()
+        return componentInstance
     }
 
     private initialiseFunctions() {
@@ -82,16 +93,18 @@ export class Sketch implements SketchClass {
             this.inputManager.setup()
         })
         this.sketch.draw = this.sketch.draw.addFunction(() => {
-            if (this.options.canvasColor) this.setCanvasColor()
-            Draw?.raise()
+            if (this.options.canvasColor) {
+                this.setCanvasColor.bind(this)()
+            }
+            Draw.raise()
         })
 
         this.sketch.windowResized = addFunction(
             this.sketch.windowResized,
-            this.onWindowResize
+            this.onWindowResize.bind(this)
         )
     }
-    private onWindowResize = (event: object | undefined) => {
+    private onWindowResize(event: object | undefined) {
         if (this.options.fullscreen) {
             this.sketch.resizeCanvas(
                 this.sketch.windowWidth,
@@ -107,7 +120,7 @@ export class Sketch implements SketchClass {
         }
     }
 
-    private setCanvasColor = () => {
+    private setCanvasColor() {
         if (this.options.canvasColor)
             this.sketch.background(
                 this.options.canvasColor.r,

@@ -1,4 +1,4 @@
-import { useEvent } from '../components'
+import { useEvent } from '../../components'
 
 describe('Events', () => {
     describe('useEvent', () => {
@@ -46,6 +46,48 @@ describe('Events', () => {
                 event.raise()
                 expect(subscriber).not.toHaveBeenCalled()
             })
+        })
+    })
+
+    describe('raise', () => {
+        it('should loop through the subscribers forwards if the direction is default', () => {
+            let index = 0
+            const subscriberOne = jest.fn().mockImplementation(() => {
+                index++
+                return index
+            })
+            const subscriberTwo = jest.fn().mockImplementation(() => {
+                index++
+                return index
+            })
+            const event = useEvent()
+
+            event.subscribe(subscriberOne)
+            event.subscribe(subscriberTwo)
+
+            event.raise()
+            expect(subscriberOne).toReturnWith(1)
+            expect(subscriberTwo).toReturnWith(2)
+        })
+
+        it('should loop through the subscribers backwards if the direction is set to -1', () => {
+            let index = 0
+            const subscriberOne = jest.fn().mockImplementation(() => {
+                index++
+                return index
+            })
+            const subscriberTwo = jest.fn().mockImplementation(() => {
+                index++
+                return index
+            })
+            const event = useEvent(-1)
+
+            event.subscribe(subscriberOne)
+            event.subscribe(subscriberTwo)
+
+            event.raise()
+            expect(subscriberTwo).toReturnWith(1)
+            expect(subscriberOne).toReturnWith(2)
         })
     })
 })
