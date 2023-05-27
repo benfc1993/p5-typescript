@@ -2,10 +2,10 @@
 mkdir public
 mkdir src
 
-cp ../p5-typescript/project/index.html public/index.html
-cp ../p5-typescript/project/index.css public/index.css
-cp ../p5-typescript/project/index.ts src/index.ts
-cp ../p5-typescript/project/tsconfig.json tsconfig.json
+cp node_modules/p5-typescript/project/index.html public/index.html
+cp node_modules/p5-typescript/project/index.css public/index.css
+cp node_modules/p5-typescript/project/index.ts src/index.ts
+cp node_modules/p5-typescript/project/tsconfig.json tsconfig.json
 
 yarn add -D parcel-bundler typescript;
 
