@@ -4,39 +4,34 @@ import { Sketch } from './Sketch'
 
 export interface ComponentClass {
     eventUnsubscriptions: {
-        setup: () => void
         draw: () => void
     }
-    sketch: p5
-    input: InputManager
-    load: (p: Sketch) => void
-    setup: () => void
+    onLoad: () => void
     draw: () => void
     onDestroy: () => void
 }
 
 export abstract class Component implements ComponentClass {
-    eventUnsubscriptions: { setup: () => void; draw: () => void } = {
-        setup: () => {},
-        draw: () => {},
-    }
-    sketch!: p5
-    input!: InputManager
+    eventUnsubscriptions: { draw: () => void }
 
-    constructor(sketchInstance?: Sketch) {
-        if (sketchInstance) {
-            this.load(sketchInstance)
+    protected sketchInstance!: Sketch
+
+    get sketch(): p5 {
+        return this.sketchInstance.sketch
+    }
+
+    get input(): InputManager {
+        return this.sketchInstance.inputManager
+    }
+
+    constructor(sketchInstance: Sketch) {
+        this.sketchInstance = sketchInstance
+        this.eventUnsubscriptions = {
+            draw: Draw.subscribe(this.draw.bind(this)),
         }
     }
 
-    load(sketchInstance: Sketch) {
-        this.sketch = sketchInstance.sketch
-        this.input = sketchInstance.inputManager
-
-        this.setup()
-        this.eventUnsubscriptions.draw = Draw.subscribe(this.draw.bind(this))
-    }
-    setup() {}
+    onLoad() {}
     draw() {}
     onDestroy() {}
 }

@@ -9,8 +9,9 @@ export class Circle extends Component {
     dragging!: boolean
     radius!: number
 
-    constructor(sketchInstance?: Sketch) {
+    constructor(sketchInstance: Sketch) {
         super(sketchInstance)
+        this.setup()
     }
     setup(): void {
         this.position = new p5.Vector(

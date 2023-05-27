@@ -13,7 +13,7 @@ const sketch = new Sketch(
                 p.createCanvas(width, height)
             }
             for (let i = 0; i < 100; i++) {
-                sketch.addComponent(new Rect())
+                sketch.addComponent(Rect)
             }
             // for (let i = 0; i < 100; i++) {
             // sketch.addComponent(new Circle())

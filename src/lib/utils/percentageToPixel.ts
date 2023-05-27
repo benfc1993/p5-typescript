@@ -42,27 +42,9 @@ export const PercentageToPixel = (
 }
 
 export const tryParseNum = (str: string, fallback: number) => {
-    if (str.match(/^-?[0-9]*$/)) return tryParseInt(str, fallback)
-    if (str.match(/^-?[0-9]*(\.[0-9]*)?$/)) return tryParseFloat(str, fallback)
+    if (str.match(/^-?[0-9]*$/)) return parseInt(str)
+    if (str.match(/^-?[0-9]*(\.[0-9]*)?$/)) return parseFloat(str)
     return fallback
-}
-
-export const tryParseInt = (str: string, fallback: number) => {
-    if (!str.match(/^-?[0-9]*$/)) return fallback
-
-    const parsed = parseInt(str)
-
-    const validParse = !isNaN(parsed)
-    return validParse ? parsed : fallback
-}
-
-export const tryParseFloat = (str: string, fallback: number) => {
-    if (!str.match(/^-?[0-9]*(\.[0-9]*)?$/)) return fallback
-
-    const parsed = parseFloat(str)
-
-    const validParse = !isNaN(parsed)
-    return validParse ? parsed : fallback
 }
 
 const createStringComponents = (
