@@ -5,15 +5,30 @@ mkdir src
 cp node_modules/p5-typescript/project/index.html public/index.html
 cp node_modules/p5-typescript/project/index.css public/index.css
 cp node_modules/p5-typescript/project/index.ts src/index.ts
-cp node_modules/p5-typescript/project/tsconfig.json tsconfig.json
+cp node_modules/p5-typescript/project/tsconfig.json ./tsconfig.json
 
-yarn add -D parcel-bundler typescript;
+touch p5.d.ts
+
+echo "import * as p5Global from 'p5/global'
+import module = require('p5')
+export = module
+export as namespace p5
+
+declare global {
+  interface p5 {}
+  interface Window {
+    setup: any
+    draw: any
+  }
+}" >> p5.d.ts
+
+yarn add -D typescript esbuild;
 
 npx npm-add-script \
   -k "build" \
-  -v "parcel build public/index.html" \
+  -v "mkdir -p dist && cp -r ./public/ dist/ && esbuild ./src/index.ts --bundle --outdir=./dist --drop:console --minify --tree-shaking=true" \
   --force;
       npx npm-add-script \
   -k "start" \
-  -v "parcel public/index.html" \
+  -v "esbuild ./src/index.ts --bundle --watch --outdir=./public --servedir=./public" \
   --force;
