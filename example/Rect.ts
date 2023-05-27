@@ -29,10 +29,11 @@ export class Rect extends Component {
             b: Math.random() * 255,
         }
         this.dragging = false
-        this.input.subscribeToClick(this.mousePressed.bind(this), 1)
+        this.input.subscribeToMousePressed(this.mousePressed.bind(this), 1)
 
         this.input.subscribeToMouseReleased(this.mouseReleased.bind(this), 1)
     }
+
     mousePressed(event: MouseEvent): boolean {
         if (
             !this.dragging &&

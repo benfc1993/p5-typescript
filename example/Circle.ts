@@ -13,6 +13,7 @@ export class Circle extends Component {
         super(sketchInstance)
         this.setup()
     }
+
     setup(): void {
         this.position = new p5.Vector(
             this.sketch.width / 2,
@@ -28,10 +29,11 @@ export class Circle extends Component {
             b: Math.random() * 255,
         }
         this.dragging = false
-        this.input.subscribeToClick(this.mousePressed.bind(this), 1)
+        this.input.subscribeToMousePressed(this.mousePressed.bind(this), 1)
 
         this.input.subscribeToMouseReleased(this.mouseReleased.bind(this), 1)
     }
+
     mousePressed(event?: MouseEvent) {
         const x = this.sketch.winMouseX - this.position.x
         const y = this.sketch.winMouseY - this.position.y

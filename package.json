@@ -10,9 +10,7 @@
         "build": "snowpack build --config prod.snowpack.config.js && tsc -p declarations.tsconfig.json && cp src/p5.d.ts dist/p5.d.ts",
         "test": "jest src/lib/__tests__"
     },
-    "bin": {
-        "init": "./bin/setup"
-    },
+    "bin": "./bin/setup",
     "keywords": [
         "typescript",
         "p5",

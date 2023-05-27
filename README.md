@@ -13,7 +13,15 @@ A OOP framework to make using p5 with typescript that much smoother.
 import p5 from 'p5'
 ```
 
-You will also need to add a `*.d.ts` file with the following content to your root directory:
+You will also need to add a `*.d.ts` file containing the declarations for p5. This can be done by running either:
+
+`npm exec p5-typescript`
+
+or
+
+`yarn exec p5-typescript`
+
+You can also just create a `*.d.ts` file with the following content to your root directory:
 
 ```typescript
 import * as p5Global from 'p5/global'
@@ -30,7 +38,20 @@ declare global {
 }
 ```
 
-This will setup the p5 types
+# Index
+
+-   [Sketch](#sketch)
+
+    -   [Creating a Sketch](#sketch)
+    -   [Adding Items to the Sketch](#adding-items-to-the-sketch)
+
+-   [Component Class](#components)
+
+-   [Events](#events)
+
+-   [Input](#input)
+
+-   [Extending p5](#extending-p5)
 
 ## Sketch
 
@@ -71,16 +92,37 @@ export const sketch = new Sketch(
 The provided `Component` class is designed to make it as easy as possible to add items to your sketch. Any class inheriting the `Component` class will be automatically added to the sketch lifecycle and updated on the draw call. These classes can also easily be added to the sketch:
 
 ```typescript
+class MyComponent extends Component {
+    constructor(SketchInstance: Sketch, name: string, size: number) {
+        super(SketchInstance)
+        ...
+    }
+}
+
 const sketch = new Sketch(
     ...
     p.setup = () => {
-        sketch.addComponent(new Component())
+        sketch.addComponent(MyComponent, 'Argument', 24)
     }
     ...
 )
 ```
 
 The `addComponent` function can be called anywhere in the application as long as you have access to the sketch instance.
+
+```typescript
+class MyComponent extends Component {
+    child: ChildComponent
+    constructor(SketchInstance: Sketch, name: string, size: number) {
+        super(sketchInstance)
+        this.child = this.sketchInstance.addComponent(
+            ChildComponent,
+            'Child component',
+            12
+        )
+    }
+}
+```
 
 You can also add / update items within the sketch by adding the logic to the initial function.
 
@@ -95,17 +137,59 @@ class Circle extends Component {
     position!: p5.Vector
     radius!: number
 
-    constructor() {
-        super()
+    constructor(sketchInstance: Sketch) {
+        super(sketchInstance)
+        this.setup()
     }
     setup(): void {
         this.position = p5.Vector()
         this.radius = 50
     }
+
+    onLoad(): void {
+        console.log('I have been initialized')
+    }
+
     draw(): void {
         this.sketch.circle(this.position.x, this.position.y, this.radius * 2)
     }
 }
+```
+
+---
+
+## Lifecyle Events
+
+There are 2 lifecycle events, these are called on the methods for Component classes.
+
+**onLoad**
+This is called when a component is initialised.
+
+**draw**
+This is called in the p5 `draw` function.
+
+---
+
+## Events
+
+Events are a simple `pub/sub` implementation of a simple event system. This is currently used to link the Components to the lifecycle.
+
+Events can pass data to subscribers via the data argument which is a generic type.
+
+The `subscribe` method will return the `unsubscribe` method. Be aware you may need to bind this when subscribing a class method.
+
+To trigger the event call the Events `raise` method.
+
+```typescript
+const myEvent = useEvent<string>()
+
+const mySubscriber = (message: string) => {
+    console.log(message)
+}
+
+const unsubscribe = myEvent.subscribe(mySubscriber)
+
+myEvent.raise('Sent data') //Output: "Sent data"
 ```
 
 ---
@@ -198,39 +282,57 @@ myFunction = myFunction.addFunction(myAdditionalFunction, 'Message')
 myFunction(2) //output: "4" "Message"
 ```
 
-## Events
+---
 
-Events are a simple `pub/sub` implementation of a simple event system. This is currently used to link the Components to the lifecycle.
+## Input
 
-Events can pass data to subscribers via the data argument which is a generic type.
+There is an Input manager included which will listen for mouse and keyboard events.
 
-The `subscribe` method will return the `unsubscribe` method. Be aware you may need to bind this when subscribing a class method.
+to use these events on component you can subscribe to these events.
 
-To trigger the event call the Events `raise` method.
+The subscribed function must return a boolean. If true is returned the event is flagged as handled and will not bubble to other subscribers.
 
-### Lifecyle Events
-
-There are 3 lifecycle events available. These are exposed and you can add any subscribers you like to them.
-
-**Load**
-This is called in the p5 `preload` function.
-
-**Setup**
-This is called in the p5 `setup` function.
-
-**Draw**
-This is called in the p5 `draw` function.
+### Subscribing to input events
 
 ```typescript
-const myEvent = useEvent<string>()
+class MyComponent extends Component {
+    ...
+    constructor(sketchInstance: Sketch) {
+        this.input.subscribeToKeyPressed(this.onKeyPressed.bind(this))
+    }
+    ...
 
-const mySubscriber = (message: string) => {
-    console.log(message)
+    onKeyPressed(event: KeyboardEvent) {
+        if (event.key === 'a') {
+            console.log('A pressed')
+            return true
+        }
+        return false
+    }
 }
+```
 
-const unsubscribe = myEvent.subscribe(mySubscriber)
+#### Order
 
-myEvent.raise('Sent data') //Output: "Sent data"
+The order of the event subscription can be defined, this allows you to specify if the subscriber should be added to the front or back of the list. By default the subscriber will be added to the back.
+
+`1 front`
+`-1 back`
+
+```typescript
+this.input.subscribeToKeyPressed(this.onKeyPressed.bind(this), -1)
+```
+
+### unsubscribing
+
+The subscribe function will return an unsubscribe function. This can be called to remove the listener from the list
+
+### Key is down
+
+There is a function on the input manager which will take in a name of a modifier key and return wether the key is down or not.
+
+```typescript
+const shiftIsHeld: boolean = this.input.isKeyDown('SHIFT')
 ```
 
 ---
