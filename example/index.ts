@@ -16,7 +16,6 @@ const sketch = new Sketch(
                 sketch.addComponent(Rect)
             }
         }
-        p.draw = () => {}
     },
     {
         divId: 'sketch-1',
