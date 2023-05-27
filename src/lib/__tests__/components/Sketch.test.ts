@@ -10,8 +10,6 @@ const mockBackground = jest.fn()
 const mockCreateCanvas = jest.fn()
 
 const mockP5 = {
-    setup: () => {},
-    draw: () => {},
     windowResized: () => {},
     createCanvas: mockCreateCanvas,
     background: mockBackground,
@@ -80,6 +78,16 @@ describe('Sketch', () => {
         it('should instantiate an input manager', () => {
             const sketch = new Sketch(() => {})
             expect(InputManager).toHaveBeenCalledWith(sketch.sketch)
+        })
+
+        it('should set sketch.setup to an empty function if none is provided', () => {
+            const sketch = new Sketch(() => {})
+            expect(sketch.sketch.setup).toEqual(expect.any(Function))
+        })
+
+        it('should set sketch.draw to an empty function if none is provided', () => {
+            const sketch = new Sketch(() => {})
+            expect(sketch.sketch.draw).toEqual(expect.any(Function))
         })
 
         it('should call initialiseFunctions', () => {

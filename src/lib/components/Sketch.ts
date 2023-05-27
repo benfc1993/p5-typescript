@@ -76,6 +76,9 @@ export class Sketch implements SketchClass {
     }
 
     private initialiseFunctions() {
+        if (!this.sketch.setup) this.sketch.setup = () => {}
+        if (!this.sketch.draw) this.sketch.draw = () => {}
+
         this.sketch.setup = this.sketch.setup.addFunction(() => {
             if (this.options.fullscreen) {
                 this.sketch.createCanvas(
