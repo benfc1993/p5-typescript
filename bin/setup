@@ -5,7 +5,7 @@ mkdir src
 cp node_modules/p5-typescript/project/index.html public/index.html
 cp node_modules/p5-typescript/project/index.css public/index.css
 cp node_modules/p5-typescript/project/index.ts src/index.ts
-cp node_modules/p5-typescript/project/tsconfig.json ./tsconfig.json
+cp node_modules/p5-typescript/project/typescriptconfig.json tsconfig.json
 
 touch p5.d.ts
 
