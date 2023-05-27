@@ -1,6 +1,6 @@
 {
     "name": "p5-typescript",
-    "version": "3.1.2",
+    "version": "3.2.0",
     "description": "A framework to make using p5 with typescript that much smoother.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -10,7 +10,10 @@
         "build": "snowpack build --config prod.snowpack.config.js && tsc -p declarations.tsconfig.json && cp src/p5.d.ts dist/p5.d.ts",
         "test": "jest src/lib/__tests__"
     },
-    "bin": "./bin/setup",
+    "bin": {
+        "p5-ts-types": "./bin/types",
+        "p5-ts-setup": "./bin/setup"
+    },
     "keywords": [
         "typescript",
         "p5",

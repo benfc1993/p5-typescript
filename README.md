@@ -15,11 +15,11 @@ import p5 from 'p5'
 
 You will also need to add a `*.d.ts` file containing the declarations for p5. This can be done by running either:
 
-`npm exec p5-typescript`
+`npm exec p5-ts-types`
 
 or
 
-`yarn exec p5-typescript`
+`yarn exec p5-ts-types`
 
 You can also just create a `*.d.ts` file with the following content to your root directory:
 
@@ -37,6 +37,20 @@ declare global {
     }
 }
 ```
+
+## Project setup
+
+From a blank project you can use a script to setup a p5 typescript project. once you have initialised npm and installed p5-typescript you can run:
+
+`npm exec p5-ts-setup`
+
+or
+
+`yarn exec p5-ts-setup`
+
+This will create a project using p5-typescript which can bundle and run in the browser.
+
+---
 
 # Index
 
