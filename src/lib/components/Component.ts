@@ -35,5 +35,9 @@ export abstract class Component<T extends Sketch = Sketch>
 
     onLoad() {}
     draw() {}
-    onDestroy() {}
+    onDestroy() {
+        Object.values(this.eventUnsubscriptions).forEach((unsubscription) =>
+            unsubscription()
+        )
+    }
 }
