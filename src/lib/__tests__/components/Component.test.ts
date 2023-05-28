@@ -11,17 +11,21 @@ jest.mock('../../components/Sketch', () => mockSketchClass)
 class DummyComponent extends Component {}
 
 const subscribers = new Set<() => void>()
+const mockUnsubscribe = jest.fn()
 const mockSubscribe = jest.fn().mockImplementation((fn: () => void) => {
     subscribers.add(fn)
+    return mockUnsubscribe
 })
 const mockRaise = jest.fn().mockImplementation((fn: () => void) => {
     subscribers.forEach((fn) => fn())
 })
 
-const mockUseEvent = jest.fn().mockImplementation(() => ({
-    subscribe: mockSubscribe,
-    raise: mockRaise,
-}))
+const mockUseEvent = jest.fn().mockImplementation(() => {
+    return {
+        subscribe: mockSubscribe,
+        raise: mockRaise,
+    }
+})
 
 jest.spyOn(Events, 'useEvent').mockImplementation(mockUseEvent)
 
@@ -51,6 +55,8 @@ describe('Component', () => {
             expect(component.input).toEqual('this is an input manager')
         })
     })
+
+    it.todo('should call all unsubscribe methods when onDestroy is called')
 
     describe('Events', () => {
         it('should initialise with a subscriber to the Draw event', () => {

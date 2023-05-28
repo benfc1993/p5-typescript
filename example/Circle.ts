@@ -11,10 +11,9 @@ export class Circle extends Component {
 
     constructor(sketchInstance: Sketch) {
         super(sketchInstance)
-        this.setup()
     }
 
-    setup(): void {
+    onLoad(): void {
         this.position = new p5.Vector(
             this.sketch.width / 2,
             this.sketch.height / 2,
