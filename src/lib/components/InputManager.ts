@@ -1,10 +1,12 @@
 type KeyEventSubscriber = (e: KeyboardEvent) => boolean
 type MouseEventSubscriber = (e: MouseEvent) => boolean
+type MouseDragEventSubscriber = (e: DragEvent) => boolean
 
 export class InputManager {
     sketch: p5
     onMousePressedSubscribers: MouseEventSubscriber[] = []
     onMouseReleasedSubscribers: MouseEventSubscriber[] = []
+    onMouseDraggedSubscribers: MouseDragEventSubscriber[] = []
     onKeyPressedSubscribers: KeyEventSubscriber[] = []
     onKeyReleasedSubscribers: KeyEventSubscriber[] = []
 
@@ -25,6 +27,13 @@ export class InputManager {
             ? this.onMouseReleasedSubscribers.push(sub)
             : this.onMouseReleasedSubscribers.unshift(sub)
         return this.unsubscribeMouseReleasedEvent.bind(this, sub)
+    }
+
+    subscribeToMouseDragged(sub: MouseDragEventSubscriber, order: 1 | -1 = -1) {
+        order === -1
+            ? this.onMouseDraggedSubscribers.push(sub)
+            : this.onMouseDraggedSubscribers.unshift(sub)
+        return this.unsubscribeMouseDraggedEvent.bind(this, sub)
     }
 
     subscribeToKeyPressed(sub: KeyEventSubscriber, order: 1 | -1 = -1) {
@@ -51,6 +60,12 @@ export class InputManager {
         const subs = new Set(this.onMouseReleasedSubscribers)
         subs.delete(sub)
         this.onMouseReleasedSubscribers = Array.from(subs)
+    }
+
+    unsubscribeMouseDraggedEvent(sub: MouseDragEventSubscriber) {
+        const subs = new Set(this.onMouseDraggedSubscribers)
+        subs.delete(sub)
+        this.onMouseDraggedSubscribers = Array.from(subs)
     }
 
     unsubscribeKeyPressedEvent(sub: KeyEventSubscriber) {
@@ -99,6 +114,23 @@ export class InputManager {
         }
     }
 
+    onMouseDragged(event?: DragEvent) {
+        if (!event) return
+
+        if (
+            this.sketch.mouseX < 0 ||
+            this.sketch.mouseX > this.sketch.width ||
+            this.sketch.mouseY < 0 ||
+            this.sketch.mouseY > this.sketch.height
+        )
+            return
+        event.preventDefault()
+        for (const subscriber of this.onMouseDraggedSubscribers) {
+            const handled = subscriber(event)
+            if (handled) return
+        }
+    }
+
     onKeyPress(event?: KeyboardEvent) {
         if (!event) return
         for (const subscriber of this.onKeyPressedSubscribers) {
@@ -122,6 +154,7 @@ export class InputManager {
     setup(): void {
         this.sketch.mousePressed = this.onMousePressed.bind(this)
         this.sketch.mouseReleased = this.onMouseReleased.bind(this)
+        this.sketch.mouseDragged = this.onMouseDragged.bind(this)
         this.sketch.keyPressed = this.onKeyPress.bind(this)
         this.sketch.keyReleased = this.onKeyRelease.bind(this)
     }
