@@ -13,7 +13,7 @@ type CanvasColor = {
     a?: number
 }
 
-interface SketchOptions {
+export interface SketchOptions {
     divId?: string
     fullscreen?: boolean
     canvasColor?: CanvasColor | null
