@@ -1,3 +1,3 @@
-import { useEvent } from './Events'
+import { useOrderedEvent } from './Events'
 
-export const Draw = useEvent()
+export const Draw = useOrderedEvent()
