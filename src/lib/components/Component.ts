@@ -11,10 +11,12 @@ export interface ComponentClass {
     onDestroy: () => void
 }
 
-export abstract class Component implements ComponentClass {
+export abstract class Component<T extends Sketch = Sketch>
+    implements ComponentClass
+{
     eventUnsubscriptions: { draw: () => void }
 
-    protected sketchInstance!: Sketch
+    protected sketchInstance!: T
 
     get sketch(): p5 {
         return this.sketchInstance.sketch
@@ -24,7 +26,7 @@ export abstract class Component implements ComponentClass {
         return this.sketchInstance.inputManager
     }
 
-    constructor(sketchInstance: Sketch) {
+    constructor(sketchInstance: T) {
         this.sketchInstance = sketchInstance
         this.eventUnsubscriptions = {
             draw: Draw.subscribe(this.draw.bind(this)),
