@@ -42,7 +42,7 @@ export const useEvent = <T = never>(dir: 1 | -1 = 1): IEvent<T> => {
             dir === 1 ? i < subArray.length : i >= 0
 
         for (let i = start; comparison(i); i += dir) {
-            subArray[i].call(data)
+            subArray[i].call(this, data)
         }
     }
 
@@ -74,7 +74,7 @@ export const useOrderedEvent = <T = never>(
             const reversed = createReversedGroups(subArray, dir)
 
             for (const sub of reversed) {
-                if (sub.call(data)) return
+                if (sub.call(this, data)) return
             }
         } else {
             subArray.sort((a, b) => {
@@ -82,7 +82,7 @@ export const useOrderedEvent = <T = never>(
             })
 
             for (const sub of subArray) {
-                sub.callBack.call(data)
+                sub.callBack.call(this, data)
             }
         }
     }
@@ -114,7 +114,7 @@ export const useBlockingOrderedEvent = <T = never>(
             const reversed = createReversedGroups(subArray, dir)
 
             for (const sub of reversed) {
-                if (sub.call(data)) return
+                if (sub.call(this, data)) return
             }
         } else {
             subArray.sort((a, b) => {
@@ -122,7 +122,7 @@ export const useBlockingOrderedEvent = <T = never>(
             })
 
             for (const sub of subArray) {
-                if (sub.callBack.call(data)) return
+                if (sub.callBack.call(this, data)) return
             }
         }
     }
