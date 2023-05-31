@@ -1,10 +1,9 @@
 import p5 from 'p5'
-import { addFunction } from '../utils/addFunction'
+import { PercentageToPixel, addFunction } from '@utils'
 import { Component } from './Component'
-import { PercentageToPixel } from '../utils'
 import { InputManager } from './InputManager'
 import { Draw } from './SketchLoopEvents'
-import { Class, DropFirst } from '../types'
+import { Class, DropFirst } from '@libTypes'
 
 type CanvasColor = {
     r: number

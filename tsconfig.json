@@ -10,7 +10,16 @@
         "moduleResolution": "node",
         "target": "es5",
         "allowJs": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@components": ["src/lib/components"],
+            "@components/*": ["src/lib/components/*"],
+            "@utils": ["src/lib/utils"],
+            "@utils/*": ["src/lib/utils/*"],
+            "@libTypes": ["src/lib/types"],
+            "@libTypes/*": ["src/lib/types/*"]
+        }
     },
     "exclude": ["node_modules"],
     "include": ["./src/**/*"]

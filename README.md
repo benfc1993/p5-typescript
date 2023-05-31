@@ -170,6 +170,26 @@ class Circle extends Component {
 }
 ```
 
+### Default properties
+
+**zIndex** - Used to determine the order of rendering and input events. A higher number will render the element on top. By default this is one but can be overwritten by passing it to the Component constructor.
+
+```typescript
+class MyComponent extends Component {
+    constructor(sketchInstance: sketch) {
+        super(sketchInstance, 5 /* zIndex will be set to 5 */)
+    }
+}
+```
+
+**position / pixelPosition** - Can be used for positioning the element. Can be provided as a number, string or function. strings allow for proportional positioning e.g.
+
+{ x: '50%', y: '50%' }
+
+The value of this property can be used by using the pixelPosition property on the class.
+
+use the position property to set the values and the pixelPosition method to get the calculated position.
+
 ---
 
 ## Lifecyle Events
@@ -312,7 +332,7 @@ The subscribed function must return a boolean. If true is returned the event is 
 class MyComponent extends Component {
     ...
     constructor(sketchInstance: Sketch) {
-        this.input.subscribeToKeyPressed(this.onKeyPressed.bind(this))
+        this.subscribeToKeyPressed(this.onKeyPressed.bind(this))
     }
     ...
 
@@ -324,17 +344,6 @@ class MyComponent extends Component {
         return false
     }
 }
-```
-
-#### Order
-
-The order of the event subscription can be defined, this allows you to specify if the subscriber should be added to the front or back of the list. By default the subscriber will be added to the back.
-
-`1 front`
-`-1 back`
-
-```typescript
-this.input.subscribeToKeyPressed(this.onKeyPressed.bind(this), -1)
 ```
 
 ### unsubscribing

@@ -14,5 +14,10 @@ module.exports = {
     mount: {
         dist: '/',
         src: '/',
-    }
+    },
+    alias: {
+        '@components': './src/lib/components',
+        '@utils': './src/lib/utils',
+        '@libTypes': './src/lib/types',
+    },
 }

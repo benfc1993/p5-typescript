@@ -12,7 +12,28 @@
         "allowJs": true,
         "declaration": true,
         "emitDeclarationOnly": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@components": [
+                "src/lib/components"
+            ],
+            "@components/*": [
+                "src/lib/components/*"
+            ],
+            "@utils": [
+                "src/lib/utils"
+            ],
+            "@utils/*": [
+                "src/lib/utils/*"
+            ],
+            "@libTypes": [
+                "src/lib/types"
+            ],
+            "@libTypes/*": [
+                "src/lib/types/*"
+            ]
+        }
     },
     "include": [
         "./src/**/*"
