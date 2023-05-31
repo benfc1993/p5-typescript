@@ -1,13 +1,19 @@
-import * as Events from '../../components/Events'
-import { Component } from '../../components/Component'
-import { Draw } from '../../components/SketchLoopEvents'
+import * as Events from '@components/Events'
+import { Component } from '@components/Component'
+import { Draw } from '@components/SketchLoopEvents'
+import { PercentageToPixel } from '@utils/percentageToPixel'
+
+jest.mock('@utils/percentageToPixel')
+const mockPercentageToPixel = PercentageToPixel as jest.MockedFunction<
+    typeof PercentageToPixel
+>
 
 const mockSketchClass = jest.fn().mockImplementation(() => ({
     sketch: 'this is a sketch',
     inputManager: 'this is an input manager',
 }))
 
-jest.mock('../../components/Sketch', () => mockSketchClass)
+jest.mock('@components/Sketch', () => mockSketchClass)
 class DummyComponent extends Component {}
 
 const subscribers = new Set<() => void>()
@@ -56,8 +62,6 @@ describe('Component', () => {
         })
     })
 
-    it.todo('should call all unsubscribe methods when onDestroy is called')
-
     describe('Events', () => {
         it('should initialise with a subscriber to the Draw event', () => {
             jest.spyOn(DummyComponent.prototype, 'draw')
@@ -68,8 +72,8 @@ describe('Component', () => {
 
         it('should add the unsubscribe from draw to the eventUnsubscriptions list', () => {
             const component = new DummyComponent(mockSketch)
-            expect(component.eventUnsubscriptions).toEqual({
-                draw: expect.any(Function),
+            expect(component.eventUnSubscriptions).toEqual({
+                draw: [expect.any(Function)],
             })
         })
     })
@@ -80,9 +84,36 @@ describe('Component', () => {
         )
     })
 
-    it('should have an onDestroy method', () => {
-        expect(Object.keys(Component.prototype)).toEqual(
-            expect.arrayContaining(['onDestroy'])
-        )
+    it('should call all unSubscription functions when onDestroy is called', () => {
+        const component = new DummyComponent(mockSketch)
+
+        const mockUnsubscribe = jest.fn()
+        component.eventUnSubscriptions = {
+            draw: [mockUnsubscribe],
+            testing: [mockUnsubscribe, mockUnsubscribe],
+            final: [mockUnsubscribe, mockUnsubscribe],
+        }
+        component.onDestroy()
+
+        expect(mockUnsubscribe).toHaveBeenCalledTimes(5)
+    })
+
+    it('should add a provided function to the unSubscription list for the given key', () => {
+        const component = new DummyComponent(mockSketch)
+        component.eventUnSubscriptions = {}
+        const mockUnsubscribe = jest.fn()
+        component.addUnSubscription('testing', mockUnsubscribe)
+
+        expect(component.eventUnSubscriptions).toEqual({
+            testing: [mockUnsubscribe],
+        })
+    })
+
+    it('should return the calculated pixel position when get pixelPosition is called', () => {
+        const component = new DummyComponent(mockSketch)
+        const expected = { x: 20, y: 12 }
+        mockPercentageToPixel.mockReturnValue(expected)
+
+        expect(component.pixelPosition).toEqual(expected)
     })
 })

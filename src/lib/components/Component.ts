@@ -1,11 +1,18 @@
 import { Draw } from './SketchLoopEvents'
-import { InputManager } from './InputManager'
+import {
+    InputManager,
+    KeyEventSubscriber,
+    MouseDragEventSubscriber,
+    MouseEventSubscriber,
+} from './InputManager'
 import { Sketch } from './Sketch'
+import { PixelPosition, Position } from '@libTypes'
+import { PercentageToPixel } from '@utils'
 
 export interface ComponentClass {
     zIndex: number
-    eventUnsubscriptions: {
-        draw: () => void
+    eventUnSubscriptions: {
+        [key: string]: (() => void)[]
     }
     onLoad: () => void
     draw: () => void
@@ -15,8 +22,14 @@ export interface ComponentClass {
 export abstract class Component<T extends Sketch = Sketch>
     implements ComponentClass
 {
+    position: Position = { x: 0, y: 0 }
+    get pixelPosition(): PixelPosition {
+        return PercentageToPixel(this.sketch, this.position)
+    }
     zIndex: number
-    eventUnsubscriptions: { draw: () => void }
+    eventUnSubscriptions: {
+        [key: string]: (() => void)[]
+    }
 
     protected sketchInstance!: T
 
@@ -31,16 +44,59 @@ export abstract class Component<T extends Sketch = Sketch>
     constructor(sketchInstance: T, zIndex: number = 1) {
         this.sketchInstance = sketchInstance
         this.zIndex = zIndex
-        this.eventUnsubscriptions = {
-            draw: Draw.subscribe(this.draw.bind(this), this.zIndex),
+        this.eventUnSubscriptions = {
+            draw: [Draw.subscribe(this.draw.bind(this), this.zIndex)],
         }
+    }
+
+    subscribeToMousePressed(sub: MouseEventSubscriber) {
+        this.addUnSubscription(
+            'mousePressed',
+            this.input.subscribeToMousePressed(sub, this.zIndex)
+        )
+    }
+
+    subscribeToMouseReleased(sub: MouseEventSubscriber) {
+        this.addUnSubscription(
+            'mouseReleased',
+            this.input.subscribeToMouseReleased(sub, this.zIndex)
+        )
+    }
+
+    subscribeToMouseDragged(sub: MouseDragEventSubscriber) {
+        this.addUnSubscription(
+            'mouseDragged',
+            this.input.subscribeToMouseDragged(sub, this.zIndex)
+        )
+    }
+
+    subscribeToKeyPressed(sub: KeyEventSubscriber) {
+        this.addUnSubscription(
+            'keyPressed',
+            this.input.subscribeToKeyPressed(sub, this.zIndex)
+        )
+    }
+
+    subscribeToKeyReleased(sub: KeyEventSubscriber) {
+        this.addUnSubscription(
+            'keyReleased',
+            this.input.subscribeToKeyReleased(sub, this.zIndex)
+        )
+    }
+
+    addUnSubscription(key: string, unSubscriptionFn: () => void) {
+        if (!(key in this.eventUnSubscriptions)) {
+            this.eventUnSubscriptions[key] = []
+        }
+
+        this.eventUnSubscriptions[key].push(unSubscriptionFn)
     }
 
     onLoad() {}
     draw() {}
     onDestroy() {
-        Object.values(this.eventUnsubscriptions).forEach((unsubscription) =>
-            unsubscription()
+        Object.values(this.eventUnSubscriptions).forEach((unSubscriptions) =>
+            unSubscriptions.forEach((unSubscription) => unSubscription())
         )
     }
 }

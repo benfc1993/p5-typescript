@@ -1,9 +1,9 @@
 import p5 from 'p5'
-import { Sketch } from '../../components/Sketch'
-import { InputManager } from '../../components/InputManager'
-import { PercentageToPixel } from '../../utils/percentageToPixel'
-import { Component } from '../../components/Component'
-import { Draw } from '../../components/SketchLoopEvents'
+import { Sketch } from '@components/Sketch'
+import { InputManager } from '@components/InputManager'
+import { PercentageToPixel } from '@utils/percentageToPixel'
+import { Component } from '@components/Component'
+import { Draw } from '@components/SketchLoopEvents'
 
 const mockResizeCanvas = jest.fn()
 const mockBackground = jest.fn()
@@ -25,11 +25,11 @@ jest.mock('p5', (...args: any[]) =>
     }))
 )
 
-jest.mock('../../components/InputManager')
-jest.mock('../../components/Component')
-jest.mock('../../components/SketchLoopEvents')
+jest.mock('@components/InputManager')
+jest.mock('@components/Component')
+jest.mock('@components/SketchLoopEvents')
 
-jest.mock('../../utils/percentageToPixel')
+jest.mock('@utils/percentageToPixel')
 const mockPercentageToPixel = PercentageToPixel as jest.MockedFunction<
     typeof PercentageToPixel
 >

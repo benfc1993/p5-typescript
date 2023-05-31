@@ -11,5 +11,10 @@ module.exports = {
         dist: '/',
         ['example']: '/',
         ['src/lib']: '/lib',
-    }
+    },
+    alias: {
+        '@components': './src/lib/components',
+        '@utils': './src/lib/utils',
+        '@libTypes': './src/lib/types',
+    },
 }
