@@ -1,5 +1,5 @@
 import p5 from 'p5'
-import { addFunction, Component, Sketch } from '../src/lib'
+import { Component, Sketch } from '../src/lib'
 
 export class Circle extends Component {
     position!: p5.Vector

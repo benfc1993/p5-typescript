@@ -3,6 +3,7 @@ import { InputManager } from './InputManager'
 import { Sketch } from './Sketch'
 
 export interface ComponentClass {
+    zIndex: number
     eventUnsubscriptions: {
         draw: () => void
     }
@@ -14,6 +15,7 @@ export interface ComponentClass {
 export abstract class Component<T extends Sketch = Sketch>
     implements ComponentClass
 {
+    zIndex: number
     eventUnsubscriptions: { draw: () => void }
 
     protected sketchInstance!: T
@@ -26,10 +28,11 @@ export abstract class Component<T extends Sketch = Sketch>
         return this.sketchInstance.inputManager
     }
 
-    constructor(sketchInstance: T) {
+    constructor(sketchInstance: T, zIndex: number = 1) {
         this.sketchInstance = sketchInstance
+        this.zIndex = zIndex
         this.eventUnsubscriptions = {
-            draw: Draw.subscribe(this.draw.bind(this)),
+            draw: Draw.subscribe(this.draw.bind(this), this.zIndex),
         }
     }
 
