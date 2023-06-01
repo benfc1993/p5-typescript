@@ -10,7 +10,7 @@ export class Rect extends Component {
     width!: number
 
     constructor(sketchInstance: Sketch) {
-        super(sketchInstance)
+        super(sketchInstance, 3)
     }
 
     onLoad(): void {
