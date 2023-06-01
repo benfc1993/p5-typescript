@@ -9,7 +9,7 @@ export class Circle extends Component {
     radius!: number
 
     constructor(sketchInstance: Sketch) {
-        super(sketchInstance, 100)
+        super(sketchInstance, 5)
     }
 
     onLoad(): void {

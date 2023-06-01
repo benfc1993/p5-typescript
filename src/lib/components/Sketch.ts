@@ -1,9 +1,8 @@
 import p5 from 'p5'
 import { PercentageToPixel, addFunction } from '@utils'
-import { Component } from './Component'
-import { InputManager } from './InputManager'
+import { Component, InputManager } from '@components'
+import type { Class, DropFirst } from '@libTypes'
 import { Draw } from './SketchLoopEvents'
-import { Class, DropFirst } from '@libTypes'
 
 type CanvasColor = {
     r: number
@@ -65,7 +64,7 @@ export class Sketch implements SketchClass {
     addComponent<T extends Class<Component>>(
         component: T,
         ...args: DropFirst<ConstructorParameters<T>>
-    ) {
+    ): InstanceType<T> {
         const componentInstance = new component(
             this,
             ...args
