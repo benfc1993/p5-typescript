@@ -8,6 +8,7 @@ import {
 import { Sketch } from './Sketch'
 import { PixelPosition, Position } from '@libTypes'
 import { PercentageToPixel } from '@utils'
+import { ExtendedP5 } from './ExtendedP5'
 
 export interface ComponentClass {
     zIndex: number
@@ -33,7 +34,7 @@ export abstract class Component<T extends Sketch = Sketch>
 
     protected sketchInstance!: T
 
-    get sketch(): p5 {
+    get sketch(): ExtendedP5 {
         return this.sketchInstance.sketch
     }
 
