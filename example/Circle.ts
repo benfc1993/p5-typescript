@@ -60,10 +60,10 @@ export class Circle extends Component {
         )
 
         this.vector.add(scaledVelocity)
-        this.sketch.push()
-        this.sketch.noStroke()
-        this.sketch.fill(this.color.r, this.color.g, this.color.b)
-        this.sketch.circle(this.vector.x, this.vector.y, this.radius * 2)
-        this.sketch.pop()
+        this.sketch.section(() => {
+            this.sketch.noStroke()
+            this.sketch.fill(this.color.r, this.color.g, this.color.b)
+            this.sketch.circle(this.vector.x, this.vector.y, this.radius * 2)
+        })
     }
 }

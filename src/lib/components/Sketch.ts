@@ -3,6 +3,7 @@ import { PercentageToPixel, addFunction } from '@utils'
 import { Component, InputManager } from '@components'
 import type { Class, DropFirst } from '@libTypes'
 import { Draw } from './SketchLoopEvents'
+import { ExtendedP5 } from './ExtendedP5'
 
 type CanvasColor = {
     r: number
@@ -26,13 +27,13 @@ interface SketchClass extends Partial<Omit<p5, 'get'>> {
         component: T,
         ...args: DropFirst<ConstructorParameters<T>>
     ) => InstanceType<T>
-    sketch: p5
+    sketch: ExtendedP5
     options: SketchOptions
     inputManager: InputManager
 }
 
 export class Sketch implements SketchClass {
-    sketch!: p5
+    sketch!: ExtendedP5
     options: SketchOptions = {
         fullscreen: false,
         canvasColor: null,
@@ -53,9 +54,9 @@ export class Sketch implements SketchClass {
                 throw new Error(
                     `No div with id: "${this.options.divId}". \n This is the value of the divId option.`
                 )
-            this.sketch = new p5(sketch, div)
+            this.sketch = new ExtendedP5(sketch, div)
         } else {
-            this.sketch = new p5(sketch)
+            this.sketch = new ExtendedP5(sketch)
         }
         this.inputManager = new InputManager(this.sketch)
         this.initialiseFunctions()
