@@ -29,7 +29,7 @@ export class Circle extends Component {
         this.subscribeToMousePressed(this.mousePressed.bind(this))
     }
 
-    mousePressed(event?: MouseEvent) {
+    mousePressed(event: MouseEvent) {
         const x = this.sketch.winMouseX - this.vector.x
         const y = this.sketch.winMouseY - this.vector.y
         const isInRadius = x * x + y * y <= this.radius * this.radius
