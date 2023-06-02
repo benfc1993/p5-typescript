@@ -1,17 +1,17 @@
-export interface IEvent<T> {
-    raise: (data?: T, data1?: T, data2?: T) => void
-    subscribe: (callback: (data?: T) => void) => () => boolean
+export interface IEvent<T extends any[] = []> {
+    raise: (...data: T) => void
+    subscribe: (callback: (...data: T) => void) => () => boolean
 }
 
-export interface IOrderedEvent<T> {
-    raise: (data?: T, data1?: T, data2?: T) => void
-    subscribe: (callBack: (data?: T) => void, order?: number) => () => boolean
+export interface IOrderedEvent<T extends any[] = []> {
+    raise: (...data: T) => void
+    subscribe: (callBack: (...data: T) => void, order?: number) => () => boolean
 }
 
-export interface IBlockingOrderedEvent<T> {
-    raise: (data?: T, data1?: T, data2?: T) => void
+export interface IBlockingOrderedEvent<T extends any[] = []> {
+    raise: (...data: T) => void
     subscribe: (
-        callBack: (data?: T) => boolean,
+        callBack: (...data: T) => boolean,
         order?: number
     ) => () => boolean
 }
@@ -26,15 +26,15 @@ const defaultOptions: OrderedEventOptions = {
     reverseGroups: false,
 }
 
-export const useEvent = <T = never>(dir: 1 | -1 = 1): IEvent<T> => {
-    const subscribers = new Set<(data?: T) => void>()
+export const useEvent = <T extends any[] = []>(dir: 1 | -1 = 1): IEvent<T> => {
+    const subscribers = new Set<(...data: T) => void>()
 
-    const subscribe = (callback: (data?: T) => void) => {
+    const subscribe = (callback: (...data: T) => void) => {
         subscribers.add(callback)
         return () => subscribers.delete(callback)
     }
 
-    const raise = (data?: T) => {
+    const raise = (...data: T) => {
         const subArray = Array.from(subscribers)
         const start = dir === 1 ? 0 : subArray.length - 1
 
@@ -42,7 +42,7 @@ export const useEvent = <T = never>(dir: 1 | -1 = 1): IEvent<T> => {
             dir === 1 ? i < subArray.length : i >= 0
 
         for (let i = start; comparison(i); i += dir) {
-            subArray[i].call(this, data)
+            subArray[i].call(this, ...data)
         }
     }
 
@@ -52,21 +52,21 @@ export const useEvent = <T = never>(dir: 1 | -1 = 1): IEvent<T> => {
     }
 }
 
-export const useOrderedEvent = <T = never>(
+export const useOrderedEvent = <T extends any[] = []>(
     options: OrderedEventOptions = defaultOptions
 ): IOrderedEvent<T> => {
     const subscribers = new Set<{
         order: number
-        callBack: (data?: T) => void
+        callBack: (...data: T) => void
     }>()
 
-    const subscribe = (callBack: (data?: T) => void, order: number = 1) => {
+    const subscribe = (callBack: (...data: T) => void, order: number = 1) => {
         const sub = { order, callBack }
         subscribers.add(sub)
         return () => subscribers.delete(sub)
     }
 
-    const raise = (data?: T) => {
+    const raise = (...data: T) => {
         const dir = options.order === 'asc' ? 1 : -1
         const subArray = Array.from(subscribers)
 
@@ -74,7 +74,7 @@ export const useOrderedEvent = <T = never>(
             const reversed = createReversedGroups(subArray, dir)
 
             for (const sub of reversed) {
-                if (sub.call(this, data)) return
+                if (sub.call(this, ...data)) return
             }
         } else {
             subArray.sort((a, b) => {
@@ -82,7 +82,7 @@ export const useOrderedEvent = <T = never>(
             })
 
             for (const sub of subArray) {
-                sub.callBack.call(this, data)
+                sub.callBack.call(this, ...data)
             }
         }
     }
@@ -93,28 +93,31 @@ export const useOrderedEvent = <T = never>(
     }
 }
 
-export const useBlockingOrderedEvent = <T = never>(
+export const useBlockingOrderedEvent = <T extends any[] = never>(
     options: OrderedEventOptions = defaultOptions
 ): IBlockingOrderedEvent<T> => {
     const subscribers = new Set<{
         order: number
-        callBack: (data?: T) => boolean
+        callBack: (...data: T) => boolean
     }>()
 
-    const subscribe = (callBack: (data?: T) => boolean, order: number = 1) => {
+    const subscribe = (
+        callBack: (...data: T) => boolean,
+        order: number = 1
+    ) => {
         const sub = { order, callBack }
         subscribers.add(sub)
         return () => subscribers.delete(sub)
     }
 
-    const raise = (data?: T) => {
+    const raise = (...data: T) => {
         const dir = options.order === 'asc' ? 1 : -1
         const subArray = Array.from(subscribers)
         if (options.reverseGroups) {
             const reversed = createReversedGroups(subArray, dir)
 
             for (const sub of reversed) {
-                if (sub.call(this, data)) return
+                if (sub.call(this, ...data)) return
             }
         } else {
             subArray.sort((a, b) => {
@@ -122,7 +125,7 @@ export const useBlockingOrderedEvent = <T = never>(
             })
 
             for (const sub of subArray) {
-                if (sub.callBack.call(this, data)) return
+                if (sub.callBack.call(this, ...data)) return
             }
         }
     }
@@ -148,8 +151,8 @@ const createReversedGroups = (
         {}
     )
     return Object.entries(grouped)
-        .sort(([keyA, valueA], [keyB, valueB]) => {
+        .sort(([keyA], [keyB]) => {
             return dir * parseInt(keyA) - dir * parseInt(keyB)
         })
-        .flatMap(([key, value]) => value.reverse())
+        .flatMap(([_, value]) => value.reverse())
 }

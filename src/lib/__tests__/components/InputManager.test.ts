@@ -119,14 +119,6 @@ describe('InputManager', () => {
             expect(mockRaise).toHaveBeenCalledWith(mockEvent)
         })
 
-        it('should not call raise if there is no event data provided', () => {
-            const inputManager = new InputManager(mockP5)
-
-            inputManager.onMousePressed()
-
-            expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
-        })
-
         it('should not call raise if mouseIsOutOfBounds returns true', () => {
             jest.spyOn(
                 InputManager.prototype,
@@ -135,7 +127,7 @@ describe('InputManager', () => {
 
             const inputManager = new InputManager(mockP5)
 
-            inputManager.onMousePressed()
+            inputManager.onMousePressed({} as MouseEvent)
 
             expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
         })
@@ -161,14 +153,6 @@ describe('InputManager', () => {
             expect(mockRaise).toHaveBeenCalledWith(mockEvent)
         })
 
-        it('should not call raise if there is no event data provided', () => {
-            const inputManager = new InputManager(mockP5)
-
-            inputManager.onMouseReleased()
-
-            expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
-        })
-
         it('should not call raise if mouseIsOutOfBounds returns true', () => {
             jest.spyOn(
                 InputManager.prototype,
@@ -177,7 +161,7 @@ describe('InputManager', () => {
 
             const inputManager = new InputManager(mockP5)
 
-            inputManager.onMouseReleased()
+            inputManager.onMouseReleased({} as MouseEvent)
 
             expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
         })
@@ -203,14 +187,6 @@ describe('InputManager', () => {
             expect(mockRaise).toHaveBeenCalledWith(mockEvent)
         })
 
-        it('should not call raise if there is no event data provided', () => {
-            const inputManager = new InputManager(mockP5)
-
-            inputManager.onMouseDragged()
-
-            expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
-        })
-
         it('should not call raise if mouseIsOutOfBounds returns true', () => {
             jest.spyOn(
                 InputManager.prototype,
@@ -219,7 +195,7 @@ describe('InputManager', () => {
 
             const inputManager = new InputManager(mockP5)
 
-            inputManager.onMouseDragged()
+            inputManager.onMouseDragged({} as DragEvent)
 
             expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
         })
@@ -244,14 +220,6 @@ describe('InputManager', () => {
 
             expect(mockRaise).toHaveBeenCalledWith(mockEvent)
         })
-
-        it('should not call raise if there is no event data provided', () => {
-            const inputManager = new InputManager(mockP5)
-
-            inputManager.onKeyPressed()
-
-            expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
-        })
     })
 
     describe('keyReleasedEvent', () => {
@@ -272,14 +240,6 @@ describe('InputManager', () => {
             inputManager.onKeyReleased(mockEvent as KeyboardEvent)
 
             expect(mockRaise).toHaveBeenCalledWith(mockEvent)
-        })
-
-        it('should not call raise if there is no event data provided', () => {
-            const inputManager = new InputManager(mockP5)
-
-            inputManager.onKeyReleased()
-
-            expect(mockRaise).not.toHaveBeenCalledWith(mockEvent)
         })
     })
 

@@ -1,5 +1,5 @@
 import p5 from 'p5'
-import { Component, Sketch, addFunction } from '../src/lib'
+import { Component, Sketch } from '../src/lib'
 
 export class Rect extends Component {
     vector!: p5.Vector
@@ -29,11 +29,10 @@ export class Rect extends Component {
         }
         this.dragging = false
         this.subscribeToMousePressed(this.mousePressed.bind(this))
-
         this.subscribeToMouseReleased(this.mouseReleased.bind(this))
     }
 
-    mousePressed(event?: MouseEvent): boolean {
+    mousePressed(event: MouseEvent): boolean {
         if (
             !this.dragging &&
             this.sketch.winMouseX > this.vector.x &&
@@ -50,7 +49,7 @@ export class Rect extends Component {
         return false
     }
 
-    mouseReleased(event?: MouseEvent) {
+    mouseReleased(event: MouseEvent) {
         this.dragging = false
         return false
     }

@@ -28,5 +28,5 @@ const sketch = new Sketch(
 )
 
 for (let i = 0; i < 100; i++) {
-    const res = sketch.addComponent(Rect)
+    sketch.addComponent(Rect)
 }

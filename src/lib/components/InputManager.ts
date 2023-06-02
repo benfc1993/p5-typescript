@@ -1,20 +1,20 @@
 import { IBlockingOrderedEvent, useBlockingOrderedEvent } from './Events'
 
-export type KeyEventSubscriber = (e?: KeyboardEvent) => boolean
-export type MouseEventSubscriber = (e?: MouseEvent) => boolean
-export type MouseDragEventSubscriber = (e?: DragEvent) => boolean
+export type KeyEventSubscriber = (e: KeyboardEvent) => boolean
+export type MouseEventSubscriber = (e: MouseEvent) => boolean
+export type MouseDragEventSubscriber = (e: DragEvent) => boolean
 
 export class InputManager {
     sketch: p5
-    mousePressedEvent: IBlockingOrderedEvent<MouseEvent> =
+    mousePressedEvent: IBlockingOrderedEvent<[MouseEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
-    mouseReleasedEvent: IBlockingOrderedEvent<MouseEvent> =
+    mouseReleasedEvent: IBlockingOrderedEvent<[MouseEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
-    mouseDraggedEvent: IBlockingOrderedEvent<DragEvent> =
+    mouseDraggedEvent: IBlockingOrderedEvent<[DragEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
-    keyPressedEvent: IBlockingOrderedEvent<KeyboardEvent> =
+    keyPressedEvent: IBlockingOrderedEvent<[KeyboardEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
-    keyReleasedEvent: IBlockingOrderedEvent<KeyboardEvent> =
+    keyReleasedEvent: IBlockingOrderedEvent<[KeyboardEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
 
     constructor(p: p5) {
@@ -42,37 +42,29 @@ export class InputManager {
         return this.keyReleasedEvent.subscribe(sub, order)
     }
 
-    onMousePressed(event?: MouseEvent) {
-        if (!event) return
-
+    onMousePressed(event: MouseEvent) {
         if (this.mouseIsOutOfBounds()) return
         event.preventDefault()
         this.mousePressedEvent.raise(event)
     }
 
-    onMouseReleased(event?: MouseEvent) {
-        if (!event) return
-
+    onMouseReleased(event: MouseEvent) {
         if (this.mouseIsOutOfBounds()) return
         event.preventDefault()
         this.mouseReleasedEvent.raise(event)
     }
 
-    onMouseDragged(event?: DragEvent) {
-        if (!event) return
-
+    onMouseDragged(event: DragEvent) {
         if (this.mouseIsOutOfBounds()) return
         event.preventDefault()
         this.mouseDraggedEvent.raise(event)
     }
 
-    onKeyPressed(event?: KeyboardEvent) {
-        if (!event) return
+    onKeyPressed(event: KeyboardEvent) {
         this.keyPressedEvent.raise(event)
     }
 
-    onKeyReleased(event?: KeyboardEvent) {
-        if (!event) return
+    onKeyReleased(event: KeyboardEvent) {
         this.keyReleasedEvent.raise(event)
     }
 
