@@ -1,6 +1,6 @@
 {
   "name": "p5-typescript",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "description": "A framework to make using p5 with typescript that much smoother.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

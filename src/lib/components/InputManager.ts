@@ -3,6 +3,7 @@ import { IBlockingOrderedEvent, useBlockingOrderedEvent } from './Events'
 export type KeyEventSubscriber = (e: KeyboardEvent) => boolean
 export type MouseEventSubscriber = (e: MouseEvent) => boolean
 export type MouseDragEventSubscriber = (e: DragEvent) => boolean
+export type ScrollEventSubscriber = (e: WheelEvent) => boolean
 
 export class InputManager {
     sketch: p5
@@ -15,6 +16,8 @@ export class InputManager {
     keyPressedEvent: IBlockingOrderedEvent<[KeyboardEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
     keyReleasedEvent: IBlockingOrderedEvent<[KeyboardEvent]> =
+        useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
+    scrolledEvent: IBlockingOrderedEvent<[WheelEvent]> =
         useBlockingOrderedEvent({ order: 'desc', reverseGroups: true })
 
     constructor(p: p5) {
@@ -40,6 +43,10 @@ export class InputManager {
 
     subscribeToKeyReleased(sub: KeyEventSubscriber, order: number = 1) {
         return this.keyReleasedEvent.subscribe(sub, order)
+    }
+
+    subscribeToScrolled(sub: ScrollEventSubscriber, order: number = 1) {
+        return this.scrolledEvent.subscribe(sub, order)
     }
 
     onMousePressed(event: MouseEvent) {
@@ -68,6 +75,10 @@ export class InputManager {
         this.keyReleasedEvent.raise(event)
     }
 
+    onScroll(event: WheelEvent) {
+        this.scrolledEvent.raise(event)
+    }
+
     isKeyDown(code: keyof typeof keyCodeConversions): boolean {
         return this.sketch.keyIsDown(keyCodeConversions[code])
     }
@@ -78,6 +89,7 @@ export class InputManager {
         this.sketch.mouseDragged = this.onMouseDragged.bind(this)
         this.sketch.keyPressed = this.onKeyPressed.bind(this)
         this.sketch.keyReleased = this.onKeyReleased.bind(this)
+        this.sketch.mouseWheel = this.onScroll.bind(this)
     }
     mouseIsOutOfBounds() {
         return (

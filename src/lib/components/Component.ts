@@ -4,6 +4,7 @@ import {
     KeyEventSubscriber,
     MouseDragEventSubscriber,
     MouseEventSubscriber,
+    ScrollEventSubscriber,
 } from './InputManager'
 import { Sketch } from './Sketch'
 import { PixelPosition, Position } from '@libTypes'
@@ -82,6 +83,13 @@ export abstract class Component<T extends Sketch = Sketch>
         this.addUnSubscription(
             'keyReleased',
             this.input.subscribeToKeyReleased(sub, this.zIndex)
+        )
+    }
+
+    subscribeToScroll(sub: ScrollEventSubscriber) {
+        this.addUnSubscription(
+            'scrolled',
+            this.input.subscribeToScrolled(sub, this.zIndex)
         )
     }
 

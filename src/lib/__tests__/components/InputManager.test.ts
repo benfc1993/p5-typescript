@@ -243,6 +243,27 @@ describe('InputManager', () => {
         })
     })
 
+    describe('scrollEvent', () => {
+        it('should call the event subscribe method when subscribeToScroll is called', () => {
+            const inputManager = new InputManager(mockP5)
+
+            const subscribeFn = (event?: WheelEvent) => {
+                return false
+            }
+
+            inputManager.subscribeToScrolled(subscribeFn)
+            expect(mockSubscribe).toHaveBeenCalledWith(subscribeFn, 1)
+        })
+
+        it('should call the event raise method when onScroll is called', () => {
+            const inputManager = new InputManager(mockP5)
+
+            inputManager.onScroll(mockEvent as WheelEvent)
+
+            expect(mockRaise).toHaveBeenCalledWith(mockEvent)
+        })
+    })
+
     describe('IsKeyDown', () => {
         it('should return true if the provided key is down', () => {
             const inputManager = new InputManager(mockP5)
