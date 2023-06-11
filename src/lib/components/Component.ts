@@ -12,10 +12,8 @@ import { PercentageToPixel } from '@utils'
 import { ExtendedP5 } from './ExtendedP5'
 
 export interface ComponentClass {
-    zIndex: number
-    eventUnSubscriptions: {
-        [key: string]: (() => void)[]
-    }
+    position: Position
+    pixelPosition: PixelPosition
     onLoad: () => void
     draw: () => void
     onDestroy: () => void
@@ -28,8 +26,8 @@ export abstract class Component<T extends Sketch = Sketch>
     get pixelPosition(): PixelPosition {
         return PercentageToPixel(this.sketch, this.position)
     }
-    zIndex: number
-    eventUnSubscriptions: {
+    protected zIndex: number
+    protected eventUnSubscriptions: {
         [key: string]: (() => void)[]
     }
 
@@ -51,49 +49,49 @@ export abstract class Component<T extends Sketch = Sketch>
         }
     }
 
-    subscribeToMousePressed(sub: MouseEventSubscriber) {
+    protected subscribeToMousePressed(sub: MouseEventSubscriber) {
         this.addUnSubscription(
             'mousePressed',
             this.input.subscribeToMousePressed(sub, this.zIndex)
         )
     }
 
-    subscribeToMouseReleased(sub: MouseEventSubscriber) {
+    protected subscribeToMouseReleased(sub: MouseEventSubscriber) {
         this.addUnSubscription(
             'mouseReleased',
             this.input.subscribeToMouseReleased(sub, this.zIndex)
         )
     }
 
-    subscribeToMouseDragged(sub: MouseDragEventSubscriber) {
+    protected subscribeToMouseDragged(sub: MouseDragEventSubscriber) {
         this.addUnSubscription(
             'mouseDragged',
             this.input.subscribeToMouseDragged(sub, this.zIndex)
         )
     }
 
-    subscribeToKeyPressed(sub: KeyEventSubscriber) {
+    protected subscribeToKeyPressed(sub: KeyEventSubscriber) {
         this.addUnSubscription(
             'keyPressed',
             this.input.subscribeToKeyPressed(sub, this.zIndex)
         )
     }
 
-    subscribeToKeyReleased(sub: KeyEventSubscriber) {
+    protected subscribeToKeyReleased(sub: KeyEventSubscriber) {
         this.addUnSubscription(
             'keyReleased',
             this.input.subscribeToKeyReleased(sub, this.zIndex)
         )
     }
 
-    subscribeToScroll(sub: ScrollEventSubscriber) {
+    protected subscribeToScroll(sub: ScrollEventSubscriber) {
         this.addUnSubscription(
             'scrolled',
             this.input.subscribeToScrolled(sub, this.zIndex)
         )
     }
 
-    addUnSubscription(key: string, unSubscriptionFn: () => void) {
+    protected addUnSubscription(key: string, unSubscriptionFn: () => void) {
         if (!(key in this.eventUnSubscriptions)) {
             this.eventUnSubscriptions[key] = []
         }

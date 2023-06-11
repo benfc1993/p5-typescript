@@ -69,44 +69,12 @@ describe('Component', () => {
             Draw.raise()
             expect(component.draw).toHaveBeenCalled()
         })
-
-        it('should add the unsubscribe from draw to the eventUnsubscriptions list', () => {
-            const component = new DummyComponent(mockSketch)
-            expect(component.eventUnSubscriptions).toEqual({
-                draw: [expect.any(Function)],
-            })
-        })
     })
 
     it('should have an onLoad method', () => {
         expect(Object.keys(Component.prototype)).toEqual(
             expect.arrayContaining(['onLoad'])
         )
-    })
-
-    it('should call all unSubscription functions when onDestroy is called', () => {
-        const component = new DummyComponent(mockSketch)
-
-        const mockUnsubscribe = jest.fn()
-        component.eventUnSubscriptions = {
-            draw: [mockUnsubscribe],
-            testing: [mockUnsubscribe, mockUnsubscribe],
-            final: [mockUnsubscribe, mockUnsubscribe],
-        }
-        component.onDestroy()
-
-        expect(mockUnsubscribe).toHaveBeenCalledTimes(5)
-    })
-
-    it('should add a provided function to the unSubscription list for the given key', () => {
-        const component = new DummyComponent(mockSketch)
-        component.eventUnSubscriptions = {}
-        const mockUnsubscribe = jest.fn()
-        component.addUnSubscription('testing', mockUnsubscribe)
-
-        expect(component.eventUnSubscriptions).toEqual({
-            testing: [mockUnsubscribe],
-        })
     })
 
     it('should return the calculated pixel position when get pixelPosition is called', () => {
