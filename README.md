@@ -253,46 +253,6 @@ myFunction(2) //output: "2" "Message"
 
 ---
 
-### Function extension method
-
-An extension method has been added to the function prototype. This allows you to add additional functionality to the body of the existing function.
-
-_**note as above**: The additional function must include all arguments of the first. All arguments are pased to the additional function. Any additional arguments you wish to pass can be added after these_
-
-#### **Without arguments**
-
-```typescript
-const myFunction = () => {
-    console.log('Hello')
-}
-
-const myAdditionalFunction = () => {
-    console.log('world')
-}
-
-myFunction = myFunction.addFunction(myAdditionalFunction)
-
-myFunction() //output: "Hello" "world"
-```
-
-#### **With arguments**
-
-```typescript
-const myFunction = (arg0: number) => {
-    console.log(arg0 * 2)
-}
-
-const myAdditionalFunction = (arg0: number, arg1: string) => {
-    console.log(arg1)
-}
-
-myFunction = myFunction.addFunction(myAdditionalFunction, 'Message')
-
-myFunction(2) //output: "4" "Message"
-```
-
----
-
 ## Input
 
 There is an Input manager included which will listen for mouse and keyboard events.

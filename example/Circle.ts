@@ -8,7 +8,7 @@ export class Circle extends Component {
     color!: { r: number; g: number; b: number }
     radius!: number
 
-    constructor(sketchInstance: Sketch) {
+    constructor(sketchInstance: Sketch, _test: string) {
         super(sketchInstance, 5)
     }
 
