@@ -21,6 +21,7 @@ jobs:
                   echo "Got release version ${{ steps.release.outputs.version }}"
                   echo "Upload release artifacts to ${{ steps.release.outputs.upload_url }}"
     publish-package:
+        needs: release-on-push
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
