@@ -3,5 +3,6 @@ src/
 *.tsconfig.json
 tsconfig.json
 .prettierrc
-*.snowpack.config.js
+*.esbuild.mjs
 example/
+jest.config.js

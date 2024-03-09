@@ -10,4 +10,6 @@ await esbuild.build({
         }),
     ],
     bundle: true,
+    treeShaking: true,
+    minify: true,
 })

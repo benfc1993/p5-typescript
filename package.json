@@ -1,13 +1,13 @@
 {
     "name": "p5-typescript",
-    "version": "3.9.1",
+    "version": "4.0.0",
     "description": "A framework to make using p5 with typescript that much smoother.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rm dist/bundle.js",
-        "start": "",
-        "build": "esbuild src/index.ts --bundle --outdir=dist",
+        "start": "esbuild ./example/index.ts --bundle --watch --outdir=./example --servedir=./example",
+        "build": "node ./esbuild.mjs",
         "test": "jest src/lib/__tests__"
     },
     "pre-commit": [
