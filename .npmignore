@@ -3,7 +3,8 @@ src/
 *.tsconfig.json
 tsconfig.json
 .prettierrc
-*.esbuild.mjs
+esbuild.mjs
 example/
 jest.config.js
 temp-build/
+
