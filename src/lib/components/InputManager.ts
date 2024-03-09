@@ -1,3 +1,4 @@
+import p5 from 'p5'
 import { IBlockingOrderedEvent, useBlockingOrderedEvent } from './Events'
 
 export type KeyEventSubscriber = (e: KeyboardEvent) => boolean

@@ -1,15 +1,19 @@
-import * as Events from '@components/Events'
+import { useBlockingOrderedEvent } from '@components/Events'
 import { InputManager } from '@components/InputManager'
+import p5 from 'p5'
 
 const mockP5 = {
-    mousePressed: (event: MouseEvent) => event,
+    mousePressed: (event: MouseEvent) => {
+        console.log('pressed')
+        return event
+    },
     mouseReleased: (event: MouseEvent) => event,
     mouseDragged: (event: MouseEvent) => event,
     keyPressed: (event: KeyboardEvent) => event,
     keyReleased: (event: KeyboardEvent) => event,
     keyIsDown: (key: number) => key === 18,
-    mouseX: 0,
-    mouseY: 0,
+    mouseX: 2,
+    mouseY: 2,
     width: 10,
     height: 10,
 } as any as p5
@@ -21,84 +25,72 @@ jest.mock('p5', (...args: any[]) =>
     }))
 )
 
+jest.mock('@components/Events')
+const mockUseBlockingOrderedEvent =
+    useBlockingOrderedEvent as jest.MockedFunction<
+        typeof useBlockingOrderedEvent
+    >
+
 const mockRaise = jest.fn()
 const mockSubscribe = jest.fn()
-const mockUseBlockingOrderedEvent = {
+
+mockUseBlockingOrderedEvent.mockReturnValue({
     raise: mockRaise,
     subscribe: mockSubscribe,
-}
+})
 
 const mockEvent = { preventDefault: () => {} } as MouseEvent | KeyboardEvent
 
 describe('InputManager', () => {
     beforeEach(() => {
-        jest.resetAllMocks()
-        jest.spyOn(Events, 'useBlockingOrderedEvent').mockReturnValue(
-            mockUseBlockingOrderedEvent
-        )
+        jest.clearAllMocks()
     })
+    describe('initializeInputEvents', () => {
+        it('should add a listener for the onMousePressed function', () => {
+            const spy = jest.spyOn(InputManager.prototype, 'onMousePressed')
+            const inputManager = new InputManager(mockP5)
 
-    it('should initialize input events', () => {
-        const inputManager = new InputManager(mockP5)
+            inputManager.sketch.mousePressed(mockEvent)
 
-        expect(inputManager.mousePressedEvent).toBe(mockUseBlockingOrderedEvent)
+            expect(spy).toHaveBeenCalledWith(mockEvent)
+        })
 
-        expect(inputManager.mouseReleasedEvent).toBe(
-            mockUseBlockingOrderedEvent
-        )
+        it('should add a listener for the onMouseReleased function', () => {
+            const spy = jest.spyOn(InputManager.prototype, 'onMouseReleased')
+            const inputManager = new InputManager(mockP5)
 
-        expect(inputManager.mouseDraggedEvent).toBe(mockUseBlockingOrderedEvent)
+            inputManager.sketch.mouseReleased(mockEvent)
 
-        expect(inputManager.keyPressedEvent).toBe(mockUseBlockingOrderedEvent)
+            expect(spy).toHaveBeenCalledWith(mockEvent)
+        })
 
-        expect(inputManager.keyReleasedEvent).toBe(mockUseBlockingOrderedEvent)
+        it('should add a listener for the onMouseDragged function', () => {
+            const spy = jest.spyOn(InputManager.prototype, 'onMouseDragged')
+            const inputManager = new InputManager(mockP5)
+
+            inputManager.sketch.mouseDragged(mockEvent)
+
+            expect(spy).toHaveBeenCalledWith(mockEvent)
+        })
+
+        it('should add a listener for the onKeyPressed function', () => {
+            const spy = jest.spyOn(InputManager.prototype, 'onKeyPressed')
+            const inputManager = new InputManager(mockP5)
+
+            inputManager.sketch.keyPressed(mockEvent)
+
+            expect(spy).toHaveBeenCalledWith(mockEvent)
+        })
+
+        it('should add a listener for the onKeyReleased function', () => {
+            const spy = jest.spyOn(InputManager.prototype, 'onKeyReleased')
+            const inputManager = new InputManager(mockP5)
+
+            inputManager.sketch.keyReleased(mockEvent)
+
+            expect(spy).toHaveBeenCalledWith(mockEvent)
+        })
     })
-
-    it('should add a listener for the onMousePressed function', () => {
-        const spy = jest.spyOn(InputManager.prototype, 'onMousePressed')
-        const inputManager = new InputManager(mockP5)
-
-        inputManager.sketch.mousePressed(mockEvent)
-
-        expect(spy).toHaveBeenCalledWith(mockEvent)
-    })
-
-    it('should add a listener for the onMouseReleased function', () => {
-        const spy = jest.spyOn(InputManager.prototype, 'onMouseReleased')
-        const inputManager = new InputManager(mockP5)
-
-        inputManager.sketch.mouseReleased(mockEvent)
-
-        expect(spy).toHaveBeenCalledWith(mockEvent)
-    })
-
-    it('should add a listener for the onMouseDragged function', () => {
-        const spy = jest.spyOn(InputManager.prototype, 'onMouseDragged')
-        const inputManager = new InputManager(mockP5)
-
-        inputManager.sketch.mouseDragged(mockEvent)
-
-        expect(spy).toHaveBeenCalledWith(mockEvent)
-    })
-
-    it('should add a listener for the onKeyPressed function', () => {
-        const spy = jest.spyOn(InputManager.prototype, 'onKeyPressed')
-        const inputManager = new InputManager(mockP5)
-
-        inputManager.sketch.keyPressed(mockEvent)
-
-        expect(spy).toHaveBeenCalledWith(mockEvent)
-    })
-
-    it('should add a listener for the onKeyReleased function', () => {
-        const spy = jest.spyOn(InputManager.prototype, 'onKeyReleased')
-        const inputManager = new InputManager(mockP5)
-
-        inputManager.sketch.keyReleased(mockEvent)
-
-        expect(spy).toHaveBeenCalledWith(mockEvent)
-    })
-
     describe('mousePressedEvent', () => {
         it('should call the event subscribe method when subscribeToMousePressed is called', () => {
             const inputManager = new InputManager(mockP5)
@@ -146,6 +138,10 @@ describe('InputManager', () => {
         })
 
         it('should call the event raise method when onMouseReleased is called', () => {
+            jest.spyOn(
+                InputManager.prototype,
+                'mouseIsOutOfBounds'
+            ).mockReturnValue(false)
             const inputManager = new InputManager(mockP5)
 
             inputManager.onMouseReleased(mockEvent as MouseEvent)
@@ -180,6 +176,10 @@ describe('InputManager', () => {
         })
 
         it('should call the event raise method when onMouseDragged is called', () => {
+            jest.spyOn(
+                InputManager.prototype,
+                'mouseIsOutOfBounds'
+            ).mockReturnValue(false)
             const inputManager = new InputManager(mockP5)
 
             inputManager.onMouseDragged(mockEvent as DragEvent)
