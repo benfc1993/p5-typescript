@@ -301,7 +301,7 @@ const shiftIsHeld: boolean = this.input.isKeyDown('SHIFT')
 
 clone the repo and use `yarn` to install dependancies
 
-To start the example use `yarn start`. This will start snowpack in dev mode which will serve the example on `:8080` by default.
+To start the example use `yarn start`. This will start esbuild serving the example on `:8000` by default.
 
 ### Making changes
 
