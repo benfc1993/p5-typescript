@@ -14,8 +14,7 @@
         "test"
     ],
     "bin": {
-        "p5-ts-types": "./bin/types",
-        "p5-ts-setup": "./bin/setup"
+        "p5-ts-types": "./bin/types"
     },
     "keywords": [
         "typescript",
