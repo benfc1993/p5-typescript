@@ -10,12 +10,12 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 'latest'
+            - name: install
+              run: yarn
             - name: lint
               run: yarn lint
             - name: build
-              run: |
-                  yarn
-                  yarn build
+              run: yarn build
             - name: test
               run: yarn test
             - name: build example
