@@ -1,7 +1,7 @@
 import p5 from 'p5'
 import { Circle } from './Circle'
 import { Rect } from './Rect'
-import { Sketch } from '../src/lib'
+import { Sketch } from '../dist'
 
 const sketch = new Sketch(
     (p: p5) => {

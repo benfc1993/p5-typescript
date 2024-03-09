@@ -10,8 +10,13 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 'latest'
-            - name: Test
+            - name: build
               run: |
                   yarn
                   yarn build
-                  yarn test
+            - name: test
+              run: yarn test
+            - name: build example
+              run: yarn build:example
+            - name: clean-up
+              run: rm -rf temp-build

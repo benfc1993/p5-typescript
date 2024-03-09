@@ -1,5 +1,5 @@
+import { Component, Sketch } from '../dist'
 import p5 from 'p5'
-import { Component, Sketch } from '../src/lib'
 
 export class Circle extends Component {
     vector!: p5.Vector
