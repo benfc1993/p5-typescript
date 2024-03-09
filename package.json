@@ -9,10 +9,12 @@
         "start": "yarn build && esbuild ./example/index.ts --bundle --watch --outdir=./example --servedir=./example",
         "build": "dts-bundle-generator -o ./dist/index.d.ts ./src/index.ts && node ./esbuild.mjs",
         "build:example": "esbuild ./example/index.ts --bundle --outdir=temp-build",
-        "test": "jest src/lib/__tests__"
+        "test": "jest src/lib/__tests__",
+        "lint": "eslint ./src"
     },
     "pre-commit": [
-        "test"
+        "test",
+        "lint"
     ],
     "bin": {
         "p5-ts-types": "./bin/types"
@@ -30,8 +32,6 @@
         "@types/jest": "^29.5.1",
         "@types/node": "^16.10.3",
         "@types/p5": "^1.7.6",
-        "@typescript-eslint/eslint-plugin": "^7.1.1",
-        "@typescript-eslint/parser": "^7.1.1",
         "browser-sync": "^3.0.2",
         "dts-bundle-generator": "^9.3.1",
         "esbuild": "^0.20.1",
@@ -41,7 +41,8 @@
         "pre-commit": "^1.2.2",
         "ts-jest": "^29.1.0",
         "tsc-alias": "^1.8.6",
-        "typescript": "^4.4.3"
+        "typescript": "^5.4.2",
+        "typescript-eslint": "^7.1.1"
     },
     "dependencies": {
         "p5": "^1.9.1"

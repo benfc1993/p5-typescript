@@ -1,14 +1,15 @@
-export interface IEvent<T extends any[] = []> {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface IEvent<T extends unknown[] = []> {
     raise: (...data: T) => void
     subscribe: (callback: (...data: T) => void) => () => boolean
 }
 
-export interface IOrderedEvent<T extends any[] = []> {
+export interface IOrderedEvent<T extends unknown[] = []> {
     raise: (...data: T) => void
     subscribe: (callBack: (...data: T) => void, order?: number) => () => boolean
 }
 
-export interface IBlockingOrderedEvent<T extends any[] = []> {
+export interface IBlockingOrderedEvent<T extends unknown[] = []> {
     raise: (...data: T) => void
     subscribe: (
         callBack: (...data: T) => boolean,
@@ -26,7 +27,9 @@ const defaultOptions: OrderedEventOptions = {
     reverseGroups: false,
 }
 
-export const useEvent = <T extends any[] = []>(dir: 1 | -1 = 1): IEvent<T> => {
+export const useEvent = <T extends unknown[] = []>(
+    dir: 1 | -1 = 1
+): IEvent<T> => {
     const subscribers = new Set<(...data: T) => void>()
 
     const subscribe = (callback: (...data: T) => void) => {
@@ -52,7 +55,7 @@ export const useEvent = <T extends any[] = []>(dir: 1 | -1 = 1): IEvent<T> => {
     }
 }
 
-export const useOrderedEvent = <T extends any[] = []>(
+export const useOrderedEvent = <T extends unknown[] = []>(
     options: OrderedEventOptions = defaultOptions
 ): IOrderedEvent<T> => {
     const subscribers = new Set<{
@@ -93,7 +96,7 @@ export const useOrderedEvent = <T extends any[] = []>(
     }
 }
 
-export const useBlockingOrderedEvent = <T extends any[] = never>(
+export const useBlockingOrderedEvent = <T extends unknown[] = never>(
     options: OrderedEventOptions = defaultOptions
 ): IBlockingOrderedEvent<T> => {
     const subscribers = new Set<{
@@ -137,11 +140,11 @@ export const useBlockingOrderedEvent = <T extends any[] = never>(
 }
 
 const createReversedGroups = (
-    array: { order: number; callBack: Function }[],
+    array: { order: number; callBack: (...args: any[]) => unknown }[],
     dir: 1 | -1
 ) => {
     const grouped = array.reduce(
-        (grouped: { [key: string]: Function[] }, sub) => {
+        (grouped: { [key: string]: ((...args: any[]) => unknown)[] }, sub) => {
             if (!(sub.order in grouped)) {
                 grouped[sub.order] = []
             }

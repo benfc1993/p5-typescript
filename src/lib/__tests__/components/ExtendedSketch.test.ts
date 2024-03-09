@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ExtendedP5 } from '@components/ExtendedP5'
 
 const mockPush = jest.fn()
 const mockPop = jest.fn()
 
 jest.mock('p5', (...args: any[]) =>
-    jest.fn(...args).mockImplementation((...args) => ({
+    jest.fn(...args).mockImplementation((..._args) => ({
         push: mockPush,
         pop: mockPop,
     }))

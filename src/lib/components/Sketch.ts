@@ -106,7 +106,7 @@ export class Sketch implements SketchClass {
             this.onWindowResize.bind(this)
         )
     }
-    private onWindowResize(event: object | undefined) {
+    private onWindowResize(_event: object | undefined) {
         if (this.options.fullscreen) {
             this.sketch.resizeCanvas(
                 this.sketch.windowWidth,

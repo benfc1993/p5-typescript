@@ -16,8 +16,9 @@ const mockP5 = {
     mouseY: 2,
     width: 10,
     height: 10,
-} as any as p5
+} as unknown as p5
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock('p5', (...args: any[]) =>
     jest.fn(...args).mockImplementation((...args) => ({
         ...mockP5,
@@ -95,7 +96,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToMousePressed is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: MouseEvent) => {
+            const subscribeFn = (_event?: MouseEvent) => {
                 return false
             }
 
@@ -129,7 +130,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToMouseReleased is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: MouseEvent) => {
+            const subscribeFn = (_event?: MouseEvent) => {
                 return false
             }
 
@@ -167,7 +168,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToMouseDragged is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: MouseEvent) => {
+            const subscribeFn = (_event?: MouseEvent) => {
                 return false
             }
 
@@ -205,7 +206,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToKeyPressed is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: KeyboardEvent) => {
+            const subscribeFn = (_event?: KeyboardEvent) => {
                 return false
             }
 
@@ -226,7 +227,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToKeyReleased is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: KeyboardEvent) => {
+            const subscribeFn = (_event?: KeyboardEvent) => {
                 return false
             }
 
@@ -247,7 +248,7 @@ describe('InputManager', () => {
         it('should call the event subscribe method when subscribeToScroll is called', () => {
             const inputManager = new InputManager(mockP5)
 
-            const subscribeFn = (event?: WheelEvent) => {
+            const subscribeFn = (_event?: WheelEvent) => {
                 return false
             }
 
