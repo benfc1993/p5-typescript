@@ -18,6 +18,7 @@ const mockP5 = {
     windowHeight: 200,
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 jest.mock('p5', (...args: any[]) =>
     jest.fn(...args).mockImplementation((...args) => ({
         ...mockP5,
@@ -33,7 +34,7 @@ jest.mock('@utils/percentageToPixel')
 const mockPercentageToPixel = PercentageToPixel as jest.MockedFunction<
     typeof PercentageToPixel
 >
-mockPercentageToPixel.mockImplementation((scalar: any, sizeIn: any) => ({
+mockPercentageToPixel.mockImplementation((_scalar: any, sizeIn: any) => ({
     x: sizeIn.w,
     y: sizeIn.h,
 }))
@@ -44,14 +45,14 @@ describe('Sketch', () => {
         beforeEach(() => jest.clearAllMocks())
         it('should create a new instance of p5 without a containing element', () => {
             const instantiationFunc = () => {}
-            const sketch = new Sketch(instantiationFunc)
+            new Sketch(instantiationFunc)
 
             expect(p5).toHaveBeenCalledWith(instantiationFunc)
         })
 
         it('should create a new instance of p5 passing the provided id', () => {
             const instantiationFunc = () => {}
-            const sketch = new Sketch(instantiationFunc, {
+            new Sketch(instantiationFunc, {
                 divId: 'sketch',
             })
 

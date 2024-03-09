@@ -22,7 +22,7 @@ const mockSubscribe = jest.fn().mockImplementation((fn: () => void) => {
     subscribers.add(fn)
     return mockUnsubscribe
 })
-const mockRaise = jest.fn().mockImplementation((fn: () => void) => {
+const mockRaise = jest.fn().mockImplementation((_fn: () => void) => {
     subscribers.forEach((fn) => fn())
 })
 

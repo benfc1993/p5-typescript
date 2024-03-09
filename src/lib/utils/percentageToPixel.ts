@@ -66,8 +66,11 @@ const createStringComponents = (
     }
 
     return numbers.reduce(
-        (splitTotals: { denom: number; addition: number }, component, idx) => {
-            ;(component as string).includes('%')
+        (
+            splitTotals: { denom: number; addition: number },
+            component: string
+        ) => {
+            component.includes('%')
                 ? (splitTotals.denom += tryParseNum(
                       (component as string).split('%')[0],
                       0
