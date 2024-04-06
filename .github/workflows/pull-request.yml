@@ -12,10 +12,6 @@ jobs:
                   node-version: 'latest'
             - name: install
               run: yarn
-            - name: install p5
-              run: yarn add p5
-            - name: install @types/p5
-              run: yarn add p5
             - name: lint
               run: yarn lint
             - name: build
