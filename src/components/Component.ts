@@ -7,9 +7,9 @@ import {
     ScrollEventSubscriber,
 } from './InputManager'
 import { Sketch } from './Sketch'
-import { PixelPosition, Position } from '@libTypes'
-import { PercentageToPixel } from '@utils'
 import { ExtendedP5 } from './ExtendedP5'
+import { PixelPosition, Position } from '@libTypes/position'
+import { PercentageToPixel } from '@utils/percentageToPixel'
 
 export interface ComponentClass {
     position: Position

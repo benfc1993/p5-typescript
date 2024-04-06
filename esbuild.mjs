@@ -6,4 +6,5 @@ await esbuild.build({
     bundle: true,
     minify: true,
     format: 'esm',
+    external: ['p5-typescript'],
 })

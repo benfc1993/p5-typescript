@@ -32,7 +32,7 @@ export class Rect extends Component {
         this.subscribeToMouseReleased(this.mouseReleased.bind(this))
     }
 
-    mousePressed(event: MouseEvent): boolean {
+    mousePressed(_event: MouseEvent): boolean {
         if (
             !this.dragging &&
             this.sketch.winMouseX > this.vector.x &&
@@ -49,7 +49,7 @@ export class Rect extends Component {
         return false
     }
 
-    mouseReleased(event: MouseEvent) {
+    mouseReleased(_event: MouseEvent) {
         this.dragging = false
         return false
     }
