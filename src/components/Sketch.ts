@@ -1,7 +1,10 @@
 import p5 from 'p5'
-import { PercentageToPixel, addFunction } from '@utils'
-import { Component, InputManager } from '@components'
-import type { Class, DropFirst } from '@libTypes'
+import { addFunction } from '@utils/addFunction'
+import { PercentageToPixel } from '@utils/percentageToPixel'
+import { Component } from '@components/Component'
+import { InputManager } from '@components/InputManager'
+import type { Class } from '@libTypes/class'
+import type { DropFirst } from '@libTypes/dropFirst'
 import { Draw } from './SketchLoopEvents'
 import { ExtendedP5 } from './ExtendedP5'
 

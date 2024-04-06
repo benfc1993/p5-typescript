@@ -8,7 +8,7 @@ export class Circle extends Component {
     color!: { r: number; g: number; b: number }
     radius!: number
 
-    constructor(sketchInstance: Sketch, _test: string) {
+    constructor(sketchInstance: Sketch) {
         super(sketchInstance, 5)
     }
 
@@ -29,7 +29,7 @@ export class Circle extends Component {
         this.subscribeToMousePressed(this.mousePressed.bind(this))
     }
 
-    mousePressed(event: MouseEvent) {
+    mousePressed(_event: MouseEvent) {
         const x = this.sketch.winMouseX - this.vector.x
         const y = this.sketch.winMouseY - this.vector.y
         const isInRadius = x * x + y * y <= this.radius * this.radius

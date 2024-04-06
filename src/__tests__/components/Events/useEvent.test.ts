@@ -1,4 +1,4 @@
-import { useEvent } from '@components'
+import { useEvent } from '@components/Events'
 
 describe('useEvent', () => {
     it('should return a raise function', () => {

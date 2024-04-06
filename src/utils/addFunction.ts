@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-this-alias */
-import { TupleDifference } from '@libTypes'
+
+import { TupleDifference } from '@libTypes/tupleDifference'
 
 declare global {
     export interface Function {
